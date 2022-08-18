@@ -31,7 +31,7 @@ class HomeParticipante extends StatelessWidget {
               child: Text("insertar 2")),
           ElevatedButton(
               onPressed: () {
-                DBAdmin.db.initDatabase2();
+                DBAdmin.db.initDatabase();
               },
               child: Text("INI"))
         ],
