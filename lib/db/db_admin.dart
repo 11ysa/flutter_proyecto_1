@@ -64,7 +64,7 @@ class DBAdmin {
     int res = await db!.insert("JURADO", {
       "NOMBRE": "pedro",
       "apellidos": "SANCHEZ",
-      "dni": "75197145",
+      "dni": "7519",
       "edad": 22,
       "JERARQUIA": "jefe"
     });
