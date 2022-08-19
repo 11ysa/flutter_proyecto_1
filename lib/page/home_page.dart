@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/page/Participante/home_participante.dart';
+import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
 class HomePage extends StatelessWidget {
   TextEditingController codigo = TextEditingController();
@@ -98,6 +99,7 @@ class HomePage extends StatelessWidget {
                             builder: (context) => HomeParticipante()));
                   },
                   style: ElevatedButton.styleFrom(
+                      primary: dcolorButon1,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14))),
                   icon: Icon(Icons.person),
@@ -112,7 +114,7 @@ class HomePage extends StatelessWidget {
               child: ElevatedButton.icon(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.indigoAccent,
+                      primary: dcolorButon2,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14))),
                   icon: Icon(Icons.supervised_user_circle_outlined),
