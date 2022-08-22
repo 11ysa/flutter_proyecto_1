@@ -1,40 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
-import 'package:flutter_proyecto_1/models/participante.dart';
-import 'package:flutter_proyecto_1/page/Participante/nuevo_participante.dart';
-import 'package:flutter_proyecto_1/page/Participante/widget.dart';
+import 'package:flutter_proyecto_1/models/Evaluador.dart';
+import 'package:flutter_proyecto_1/page/Evaluador/nuevo_Evaluador.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
-import 'package:path/path.dart';
 
-import 'items_list.dart';
+class HomeEvaluador extends StatefulWidget {
+  const HomeEvaluador({Key? key}) : super(key: key);
 
-class HomeParticipante extends StatefulWidget {
   @override
-  State<HomeParticipante> createState() => _HomeParticipanteState();
+  State<HomeEvaluador> createState() => _HomeEvaluadorState();
 }
 
-class _HomeParticipanteState extends State<HomeParticipante> {
-  deleteParticipante(Context, int id) {
-    DBAdmin.db.deleteParticipante(id).then((value) {
-      if (value > 0) {
-        ScaffoldMessenger.of(Context).showSnackBar(SnackBar(
-            content: Row(
-          children: const [
-            Icon(Icons.check_circle, color: Colors.white),
-            SizedBox(width: 10),
-            Text("Participante Eliminado")
-          ],
-        )));
-      }
-    });
-  }
-
-  showNuevoParticipante(contex) {
+class _HomeEvaluadorState extends State<HomeEvaluador> {
+  showNuevoEvaluador(contex) {
     showDialog(
         context: contex,
         builder: (BuildContext context) {
-          return formNuevoParticipante();
+          return formNuevoEvaluador();
         }).then((value) {
       setState(() {});
     });
@@ -43,20 +26,23 @@ class _HomeParticipanteState extends State<HomeParticipante> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBarParticipante,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showNuevoParticipante(context);
-          },
-          child: const Icon(Icons.add),
-        ),
-        body: FutureBuilder(
+      appBar: AppBar(
+        title: Text("Evaluador"),
+        backgroundColor: dcolorAppBar,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showNuevoEvaluador(context);
+        },
+        child: const Icon(Icons.add),
+      ),
+      /* body: FutureBuilder(
             future: DBAdmin.db.getParticipante(),
             builder: (BuildContext context, AsyncSnapshot snap) {
               if (snap.hasData) {
-                List<ParticipanteModel> listaPar = snap.data;
+                List<EvaluadorModel> evaluModel = snap.data;
                 return ListView.builder(
-                    itemCount: listaPar.length,
+                    itemCount: evaluModel.length,
                     itemBuilder: (BuildContext context, index) {
                       return Dismissible(
                         key: UniqueKey(),
@@ -65,7 +51,7 @@ class _HomeParticipanteState extends State<HomeParticipante> {
                         background: Container(color: Colors.redAccent),
                         //finalizar el arrastre
                         onDismissed: (DismissDirection direction) {
-                          deleteParticipante(context, listaPar[index].id!);
+                       //   deleteParticipante(context, listaPar[index].id!);
                         },
                         child: ItemsParticipante(
                             id: int.parse(listaPar[index].id.toString()),
@@ -83,6 +69,8 @@ class _HomeParticipanteState extends State<HomeParticipante> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            }));
+            }
+            )*/
+    );
   }
 }

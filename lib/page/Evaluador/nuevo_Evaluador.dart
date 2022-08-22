@@ -1,33 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/db/db_admin.dart';
-import 'package:flutter_proyecto_1/models/participante.dart';
-import 'package:flutter_proyecto_1/page/Participante/widget.dart';
-import 'package:flutter_proyecto_1/ui/generales/button_normal_widget.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
 import '../../ui/generales/textfield_normal_widget.dart';
 
-class formNuevoParticipante extends StatefulWidget {
+class formNuevoEvaluador extends StatefulWidget {
+  const formNuevoEvaluador({Key? key}) : super(key: key);
+
   @override
-  State<formNuevoParticipante> createState() => _NuevoParticipanteState();
+  State<formNuevoEvaluador> createState() => _formNuevoJuradoState();
 }
 
-class _NuevoParticipanteState extends State<formNuevoParticipante> {
+class _formNuevoJuradoState extends State<formNuevoEvaluador> {
   final _formkey = GlobalKey<FormState>();
+  int gender = 1;
   final TextEditingController _nombreController = TextEditingController();
-
   final TextEditingController _apellidosController = TextEditingController();
-
   final TextEditingController _dni = TextEditingController();
-
-  final TextEditingController _especialdad = TextEditingController();
-
-  final TextEditingController _edad = TextEditingController();
+  final TextEditingController _area = TextEditingController();
+  final TextEditingController _jeraquia = TextEditingController();
+  final TextEditingController _clave = TextEditingController();
 
   //insertar nuevo participante
-  registrarParticpante() {
-    if (_formkey.currentState!.validate()) {
+  registrarEvaluador() {
+    /*  if (_formkey.currentState!.validate()) {
       ParticipanteModel model = ParticipanteModel(
           nombre: _nombreController.text,
           apellidos: _apellidosController.text,
@@ -54,13 +50,16 @@ class _NuevoParticipanteState extends State<formNuevoParticipante> {
                 ],
               )));
         }
-      });
-    }
+      }
+      );
+    }*/
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      title: Text("Nuevo Evaluador"),
+      elevation: 10,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       content: Form(
         key: _formkey,
@@ -68,8 +67,7 @@ class _NuevoParticipanteState extends State<formNuevoParticipante> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Nuevo Participante"),
-              Divider(height: 10),
+              const Divider(height: 10),
               TextFieldNormalWidget(
                 hintText: "Nombres",
                 icon: 'user',
@@ -95,29 +93,50 @@ class _NuevoParticipanteState extends State<formNuevoParticipante> {
                 height: 12,
               ),
               TextFieldNormalWidget(
-                  hintText: "Edad",
+                  hintText: "Area Trabajo",
                   icon: "bx-ege",
                   isDNI: false,
-                  controller: _edad,
-                  campoNumerico: true),
-              const SizedBox(
-                height: 12,
-              ),
+                  controller: _area,
+                  campoNumerico: false),
               TextFieldNormalWidget(
-                  hintText: "Especialidad",
-                  icon: "user-badge",
+                  hintText: "Clave de Acceso",
+                  icon: "bx-ege",
                   isDNI: false,
-                  controller: _especialdad,
+                  controller: _clave,
                   campoNumerico: false),
               const SizedBox(
                 height: 12,
               ),
+              RadioListTile(
+                  value: 1,
+                  groupValue: gender,
+                  title: const Text("Jefe"),
+                  onChanged: (int? value) {
+                    gender = value!;
+                    setState(() {});
+                  }),
+              RadioListTile(
+                  value: 0,
+                  groupValue: gender,
+                  title: const Text("Colaborador"),
+                  onChanged: (int? value) {
+                    gender = value!;
+                    setState(() {});
+                  }),
+              RadioListTile(
+                  value: 0,
+                  groupValue: gender,
+                  title: const Text("Asistente"),
+                  onChanged: (int? value) {
+                    gender = value!;
+                    setState(() {});
+                  }),
               SizedBox(
                 width: double.infinity,
                 height: 45,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    registrarParticpante();
+                    registrarEvaluador();
                   },
                   icon: const Icon(Icons.save),
                   label: const Text("Guardar"),

@@ -5,16 +5,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class TextFieldNormalWidget extends StatelessWidget {
   String hintText;
-  String icon;
+  String? icon;
   bool isDNI;
   TextEditingController controller;
+  bool? campoNumerico;
 
-  TextFieldNormalWidget({
-    required this.hintText,
-    required this.icon,
-    required this.isDNI,
-    required this.controller,
-  });
+  TextFieldNormalWidget(
+      {required this.hintText,
+      required this.icon,
+      required this.isDNI,
+      required this.controller,
+      required this.campoNumerico});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,9 @@ class TextFieldNormalWidget extends StatelessWidget {
               blurRadius: 12.0),
         ],
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
-        keyboardType: isDNI ? TextInputType.number : null,
+        keyboardType: isDNI || campoNumerico! ? TextInputType.number : null,
         maxLength: isDNI ? 8 : null,
         style: TextStyle(
           fontSize: 14.0,
@@ -42,6 +43,11 @@ class TextFieldNormalWidget extends StatelessWidget {
               ]
             : [],
         decoration: InputDecoration(
+          label: Text(hintText),
+          labelStyle: TextStyle(
+            fontSize: 14.0,
+            color: dColorFontPrimary.withOpacity(0.45),
+          ),
           counterText: "",
           filled: true,
           fillColor: Colors.white,
@@ -67,6 +73,11 @@ class TextFieldNormalWidget extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
         ),
+        validator: (String? value) {
+          if (value!.isEmpty) {
+            return "el Campo Es obligatorio";
+          }
+        },
       ),
     );
   }

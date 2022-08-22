@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/page/Participante/home_participante.dart';
+import 'package:flutter_proyecto_1/page/Evaluador/home_evaluador.dart';
+import 'package:flutter_proyecto_1/page/menu_page.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
 class HomePage extends StatelessWidget {
@@ -93,10 +94,8 @@ class HomePage extends StatelessWidget {
               height: 54,
               child: ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeParticipante()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MenuPage()));
                   },
                   style: ElevatedButton.styleFrom(
                       primary: dcolorButon1,
@@ -112,7 +111,12 @@ class HomePage extends StatelessWidget {
               width: double.infinity,
               height: 54,
               child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomeEvaluador()));
+                  },
                   style: ElevatedButton.styleFrom(
                       primary: dcolorButon2,
                       shape: RoundedRectangleBorder(

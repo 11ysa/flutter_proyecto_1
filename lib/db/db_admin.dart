@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_proyecto_1/models/Evaluador.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,25 +29,26 @@ class DBAdmin {
         txn.execute(
             "CREATE TABLE PARTICIPANTE(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, edad INTEGER, especialidad TEXT)");
         txn.execute(
-            "CREATE TABLE JURADO(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, edad INTEGER, JERARQUIA TEXT)");
+            "CREATE TABLE EVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, area TEXT,  clave INTEGER,JERARQUIA TEXT)");
       });
     });
   }
 
   //insertar participantes
-  Future<int> insertParticipante(Participante participante) async {
+  Future<int> insertParticipante(ParticipanteModel participante) async {
     Database? db = await checkDatabase();
     int res = await db!.insert("PARTICIPANTE", {
       "nombre": participante.nombre,
       "apellidos": participante.apellidos,
       "dni": participante.dni,
-      "edad": participante.edad
+      "edad": participante.edad,
+      "especialidad": participante.especialidad
     });
     return res;
   }
 
   //Actualizar Participante
-  Future<int> updateParticipante(Participante participante) async {
+  Future<int> updateParticipante(ParticipanteModel participante) async {
     Database? db = await checkDatabase();
     int res = await db!.update(
         "PARTICIPANTE",
@@ -54,7 +56,8 @@ class DBAdmin {
           "nombre": participante.nombre,
           "apellidos": participante.apellidos,
           "dni": participante.dni,
-          "edad": participante.edad
+          "edad": participante.edad,
+          "especialidad": participante.especialidad
         },
         where: "id=?",
         whereArgs: [participante.id]);
@@ -63,11 +66,16 @@ class DBAdmin {
   }
 
   //obtener participantes
-  Future<List<Map<String, dynamic>>> getParticipante() async {
+  Future<List<ParticipanteModel>> getParticipante() async {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> ListaParticipantes =
         await db!.query("PARTICIPANTE");
-    return ListaParticipantes;
+
+    List<ParticipanteModel> listParti =
+        ListaParticipantes.map((e) => ParticipanteModel.deMapAModel(e))
+            .toList();
+
+    return listParti;
   }
 
   //eliminar Participante
@@ -77,23 +85,56 @@ class DBAdmin {
     return res;
   }
 
-  //
-  //jurado
-  insertJurado() async {
+  //********************** */
+
+  //registrar Evaluador
+  Future<int> insertEvaluador(EvaluadorModel EvaluadorModel) async {
     Database? db = await checkDatabase();
-    int res = await db!.insert("JURADO", {
-      "NOMBRE": "pedro",
-      "apellidos": "SANCHEZ",
-      "dni": "7519",
-      "edad": 22,
-      "JERARQUIA": "jefe"
+    int res = await db!.insert("EVALUADOR", {
+      "NOMBRE": EvaluadorModel.nombre,
+      "apellidos": EvaluadorModel.apellidos,
+      "dni": EvaluadorModel.dni,
+      "area": EvaluadorModel.area,
+      "calve": EvaluadorModel.clave,
+      "JERARQUIA": EvaluadorModel.jerarquia,
     });
-    print(res);
+
+    return res;
   }
 
-  getJurado() async {
+  //actualizar Evaluador
+  Future<int> updateEvaluador(EvaluadorModel EvaluadorModel) async {
     Database? db = await checkDatabase();
-    List jura = await db!.query("JURADO");
-    print(jura);
+    int res = await db!.update(
+        "EVALUADOR",
+        {
+          "NOMBRE": EvaluadorModel.nombre,
+          "apellidos": EvaluadorModel.apellidos,
+          "dni": EvaluadorModel.dni,
+          "area": EvaluadorModel.area,
+          "calve": EvaluadorModel.clave,
+          "JERARQUIA": EvaluadorModel.jerarquia,
+        },
+        where: "id=?",
+        whereArgs: [EvaluadorModel.id]);
+
+    return res;
+  }
+//obtener Evaluador
+
+  Future<List<EvaluadorModel>> getEvaluador() async {
+    Database? db = await checkDatabase();
+    List<Map<String, dynamic>> listaMap = await db!.query("EVALUADOR");
+
+    List<EvaluadorModel> listModel =
+        listaMap.map((e) => EvaluadorModel.deMapAModel(e)).toList();
+    return listModel;
+  }
+
+//Eliminar Evaluador
+  Future<int> deleteEvaluador(int id) async {
+    Database? db = await checkDatabase();
+    int res = await db!.delete("EVALUADOR", where: "id=$id");
+    return res;
   }
 }
