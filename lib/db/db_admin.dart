@@ -29,7 +29,7 @@ class DBAdmin {
         txn.execute(
             "CREATE TABLE PARTICIPANTE(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, edad INTEGER, especialidad TEXT)");
         txn.execute(
-            "CREATE TABLE EVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, area TEXT,  clave INTEGER,JERARQUIA TEXT)");
+            "CREATE TABLE EVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, area TEXT,  clave INTEGER,jerarquia TEXT)");
       });
     });
   }
@@ -70,7 +70,8 @@ class DBAdmin {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> ListaParticipantes =
         await db!.query("PARTICIPANTE");
-
+    print("object");
+    print(ListaParticipantes);
     List<ParticipanteModel> listParti =
         ListaParticipantes.map((e) => ParticipanteModel.deMapAModel(e))
             .toList();
@@ -91,12 +92,12 @@ class DBAdmin {
   Future<int> insertEvaluador(EvaluadorModel EvaluadorModel) async {
     Database? db = await checkDatabase();
     int res = await db!.insert("EVALUADOR", {
-      "NOMBRE": EvaluadorModel.nombre,
+      "nombre": EvaluadorModel.nombre,
       "apellidos": EvaluadorModel.apellidos,
       "dni": EvaluadorModel.dni,
       "area": EvaluadorModel.area,
-      "calve": EvaluadorModel.clave,
-      "JERARQUIA": EvaluadorModel.jerarquia,
+      "clave": EvaluadorModel.clave,
+      "jerarquia": EvaluadorModel.jerarquia,
     });
 
     return res;
@@ -125,9 +126,9 @@ class DBAdmin {
   Future<List<EvaluadorModel>> getEvaluador() async {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> listaMap = await db!.query("EVALUADOR");
-
     List<EvaluadorModel> listModel =
         listaMap.map((e) => EvaluadorModel.deMapAModel(e)).toList();
+    print(listModel);
     return listModel;
   }
 

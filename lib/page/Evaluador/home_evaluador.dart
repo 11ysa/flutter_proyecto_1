@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/Evaluador.dart';
+import 'package:flutter_proyecto_1/page/Evaluador/items_list.dart';
 import 'package:flutter_proyecto_1/page/Evaluador/nuevo_Evaluador.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
@@ -13,6 +14,21 @@ class HomeEvaluador extends StatefulWidget {
 }
 
 class _HomeEvaluadorState extends State<HomeEvaluador> {
+  deleteEvaluador(Context, int id) {
+    DBAdmin.db.deleteEvaluador(id).then((value) {
+      if (value > 0) {
+        ScaffoldMessenger.of(Context).showSnackBar(SnackBar(
+            content: Row(
+          children: const [
+            Icon(Icons.check_circle, color: Colors.white),
+            SizedBox(width: 10),
+            Text("Evaluador Eliminado")
+          ],
+        )));
+      }
+    });
+  }
+
   showNuevoEvaluador(contex) {
     showDialog(
         context: contex,
@@ -26,18 +42,18 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Evaluador"),
-        backgroundColor: dcolorAppBar,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showNuevoEvaluador(context);
-        },
-        child: const Icon(Icons.add),
-      ),
-      /* body: FutureBuilder(
-            future: DBAdmin.db.getParticipante(),
+        appBar: AppBar(
+          title: Text("Evaluador"),
+          backgroundColor: dcolorAppBar,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showNuevoEvaluador(context);
+          },
+          child: const Icon(Icons.add),
+        ),
+        body: FutureBuilder(
+            future: DBAdmin.db.getEvaluador(),
             builder: (BuildContext context, AsyncSnapshot snap) {
               if (snap.hasData) {
                 List<EvaluadorModel> evaluModel = snap.data;
@@ -51,17 +67,9 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
                         background: Container(color: Colors.redAccent),
                         //finalizar el arrastre
                         onDismissed: (DismissDirection direction) {
-                       //   deleteParticipante(context, listaPar[index].id!);
+                          deleteEvaluador(context, evaluModel[index].id!);
                         },
-                        child: ItemsParticipante(
-                            id: int.parse(listaPar[index].id.toString()),
-                            // ignore: prefer_interpolation_to_compose_strings
-                            nombreCompleto: listaPar[index].nombre +
-                                " " +
-                                listaPar[index].apellidos,
-                            dni: listaPar[index].dni,
-                            edad: listaPar[index].edad.toString(),
-                            especialidad: listaPar[index].especialidad),
+                        child: ItemsEvaluador(modelEvalu: evaluModel[index]),
                       );
                     });
               }
@@ -69,8 +77,6 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            }
-            )*/
-    );
+            }));
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/db/db_admin.dart';
+import 'package:flutter_proyecto_1/models/Evaluador.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
 import '../../ui/generales/textfield_normal_widget.dart';
@@ -14,24 +16,44 @@ class formNuevoEvaluador extends StatefulWidget {
 class _formNuevoJuradoState extends State<formNuevoEvaluador> {
   final _formkey = GlobalKey<FormState>();
   int gender = 1;
-  final TextEditingController _nombreController = TextEditingController();
+  String jerarqui() {
+    switch (gender) {
+      case 2:
+        {
+          return "Colaborador";
+        }
+
+      case 3:
+        {
+          return "Asistente";
+        }
+
+      default:
+        {
+          return "Jefe";
+        }
+    }
+  }
+
+  final TextEditingController _nombreController =
+      TextEditingController(text: "jhon");
   final TextEditingController _apellidosController = TextEditingController();
-  final TextEditingController _dni = TextEditingController();
-  final TextEditingController _area = TextEditingController();
-  final TextEditingController _jeraquia = TextEditingController();
-  final TextEditingController _clave = TextEditingController();
+  final TextEditingController _dniController = TextEditingController();
+  final TextEditingController _areaController = TextEditingController();
+  final TextEditingController _claveController = TextEditingController();
 
   //insertar nuevo participante
   registrarEvaluador() {
-    /*  if (_formkey.currentState!.validate()) {
-      ParticipanteModel model = ParticipanteModel(
+    print(jerarqui());
+    if (_formkey.currentState!.validate()) {
+      EvaluadorModel model = EvaluadorModel(
           nombre: _nombreController.text,
           apellidos: _apellidosController.text,
-          dni: _dni.text,
-          edad: int.parse(_edad.text),
-          especialidad: _especialdad.text);
-
-      DBAdmin.db.insertParticipante(model).then((value) {
+          dni: _dniController.text,
+          area: _areaController.text,
+          clave: int.parse(_claveController.text),
+          jerarquia: jerarqui());
+      DBAdmin.db.insertEvaluador(model).then((value) {
         if (value > 0) {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -46,13 +68,12 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                     Icons.check_circle,
                     color: Colors.white,
                   ),
-                  Text("Participante registrado con exito")
+                  Text("Evaluador registrado con exito")
                 ],
               )));
         }
-      }
-      );
-    }*/
+      });
+    }
   }
 
   @override
@@ -87,7 +108,7 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                   hintText: "DNI",
                   icon: "id-card",
                   isDNI: true,
-                  controller: _dni,
+                  controller: _dniController,
                   campoNumerico: true),
               const SizedBox(
                 height: 12,
@@ -96,14 +117,14 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                   hintText: "Area Trabajo",
                   icon: "bx-ege",
                   isDNI: false,
-                  controller: _area,
+                  controller: _areaController,
                   campoNumerico: false),
               TextFieldNormalWidget(
                   hintText: "Clave de Acceso",
                   icon: "bx-ege",
                   isDNI: false,
-                  controller: _clave,
-                  campoNumerico: false),
+                  controller: _claveController,
+                  campoNumerico: true),
               const SizedBox(
                 height: 12,
               ),
@@ -113,22 +134,25 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                   title: const Text("Jefe"),
                   onChanged: (int? value) {
                     gender = value!;
+                    print(jerarqui());
                     setState(() {});
                   }),
               RadioListTile(
-                  value: 0,
+                  value: 2,
                   groupValue: gender,
                   title: const Text("Colaborador"),
                   onChanged: (int? value) {
                     gender = value!;
+                    print(jerarqui());
                     setState(() {});
                   }),
               RadioListTile(
-                  value: 0,
+                  value: 3,
                   groupValue: gender,
                   title: const Text("Asistente"),
                   onChanged: (int? value) {
                     gender = value!;
+                    print(jerarqui());
                     setState(() {});
                   }),
               SizedBox(
