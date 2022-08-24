@@ -35,8 +35,7 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
     }
   }
 
-  final TextEditingController _nombreController =
-      TextEditingController(text: "jhon");
+  final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _apellidosController = TextEditingController();
   final TextEditingController _dniController = TextEditingController();
   final TextEditingController _areaController = TextEditingController();
@@ -44,7 +43,6 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
 
   //insertar nuevo participante
   registrarEvaluador() {
-    print(jerarqui());
     if (_formkey.currentState!.validate()) {
       EvaluadorModel model = EvaluadorModel(
           nombre: _nombreController.text,

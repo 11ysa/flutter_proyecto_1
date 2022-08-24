@@ -30,9 +30,17 @@ class DBAdmin {
             "CREATE TABLE PARTICIPANTE(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, edad INTEGER, especialidad TEXT)");
         txn.execute(
             "CREATE TABLE EVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, area TEXT,  clave INTEGER,jerarquia TEXT)");
+
+        txn.execute(
+            "CREATE TABLE CONVOCATORIA(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT,estado TEXT)");
+
+        txn.execute(
+            "CREATE TABLE CONEVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, idevaluador INTEGER, idconvocatoria INTEGER)");
       });
     });
   }
+  //insertamos convocatoria
+  //Eliminamos (si no Encuntra otros registros) y/o  desactivamos ()
 
   //insertar participantes
   Future<int> insertParticipante(ParticipanteModel participante) async {

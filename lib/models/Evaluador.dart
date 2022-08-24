@@ -29,4 +29,8 @@ class EvaluadorModel {
     String dato = nombre + "" + apellidos;
     return dato;
   }
+
+  String nombres() {
+    return nombre;
+  }
 }
