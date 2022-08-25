@@ -47,7 +47,7 @@ class HomeConvocatoria extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Juan Sanchez Alarcon"),
+                            Text("Juan Sanchez"),
                             SizedBox(
                               width: 5,
                             ),
