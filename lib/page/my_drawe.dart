@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_proyecto_1/page/Evaluador/home_evaluador.dart';
 import 'package:flutter_proyecto_1/page/Participante/home_participante.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/home_convocatoria.dart';
 import 'package:flutter_proyecto_1/page/menu_page.dart';
 
 class MyDrawe extends StatelessWidget {
@@ -52,7 +53,10 @@ class MyDrawe extends StatelessWidget {
             title: Text("Inicio"),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HomeConvocatoria()));
+            },
             leading: Icon(
               Icons.post_add,
               color: Colors.black.withOpacity(0.5),

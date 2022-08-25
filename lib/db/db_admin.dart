@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_proyecto_1/models/Evaluador.dart';
+import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,17 +31,18 @@ class DBAdmin {
             "CREATE TABLE PARTICIPANTE(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, edad INTEGER, especialidad TEXT)");
         txn.execute(
             "CREATE TABLE EVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, area TEXT,  clave INTEGER,jerarquia TEXT)");
-
         txn.execute(
             "CREATE TABLE CONVOCATORIA(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT,estado TEXT)");
-
         txn.execute(
             "CREATE TABLE CONEVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, idevaluador INTEGER, idconvocatoria INTEGER)");
       });
     });
   }
   //insertamos convocatoria
+
   //Eliminamos (si no Encuntra otros registros) y/o  desactivamos ()
+  //obtenemos convocatoria con evaluador  con participantes
+  //
 
   //insertar participantes
   Future<int> insertParticipante(ParticipanteModel participante) async {

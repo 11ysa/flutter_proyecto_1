@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/models/Evaluador.dart';
-import 'package:flutter_proyecto_1/page/Evaluador/update_evaluador.dart';
+import 'package:flutter_proyecto_1/page/Evaluador/action_evaluador.dart';
 import 'package:flutter_proyecto_1/page/Participante/update_participante.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
@@ -234,7 +234,7 @@ class ItemsEvaluador extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                UpdateEvaluador(model: modelEvalu)));
+                                ActionEvaluador(model: modelEvalu)));
                   },
                   icon: Icon(Icons.edit))
             ],

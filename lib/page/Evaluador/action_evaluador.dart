@@ -4,15 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/models/Evaluador.dart';
 
-class UpdateEvaluador extends StatelessWidget {
-  EvaluadorModel model;
-  UpdateEvaluador({required this.model});
+class ActionEvaluador extends StatelessWidget {
+  EvaluadorModel? model;
+  ActionEvaluador({this.model});
+
+  TextEditingController ControllerTexto = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
         title: TextFormField(
-      initialValue: model.dni,
+      initialValue: model!.nombre,
+      //controller: ControllerTexto
     ));
   }
 }
