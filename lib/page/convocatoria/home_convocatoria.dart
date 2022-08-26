@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/widget_Evaluadores.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/widget_Participantes.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
 class HomeConvocatoria extends StatelessWidget {
@@ -32,290 +34,172 @@ class HomeConvocatoria extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14))),
             ),
             const SizedBox(
-              height: 10,
+              height: 2,
             ),
-         
-         
-            Card(
-              color: Colors.white54,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
-              elevation: 5.0,
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text("Evaluadores"),
-                    leading: Icon(Icons.supervised_user_circle_outlined),
-                    subtitle: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text("75197145"),
-                                SizedBox(width:5),
-                                Text("Juan Sanchez"),
-                              ],
-                            ),
-                            
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  size: 16,
-                                  color: Colors.yellow[300],
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  size: 16,
-                                  color: Colors.yellow[300],
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  size: 16,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  size: 16,
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                           Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text("75197145"),
-                                SizedBox(width:5),
-                                Text("Juan Sanchez"),
-                              ],
-                            ),
-                            
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  size: 16,
-                                  color: Colors.yellow[300],
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  size: 16,
-                                  color: Colors.yellow[300],
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  size: 16,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  size: 16,
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                  
-                  
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.add,
-                          size: 15,
-                        ),
-                        style: ElevatedButton.styleFrom(shape: CircleBorder()),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.edit,
-                          size: 15,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(), padding: EdgeInsets.all(5)),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          
-             SizedBox(
-              height: 20,
-             ),
-                      
-            Card(
-              color: Colors.white54,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
-              elevation: 5.0,
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text("Participantes"),
-                    leading: Icon(Icons.person),
-                    subtitle: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  Text("JHON SANCHEZ ALARCON"),
-                                  Row(
-                                    children: [
-                                      Text("75197145"),
-                                      SizedBox(width:8),
-                                      Text("Administrador"),
-                                    ],
-                                  ),
-                              ],
-                            ),
-                          
-                      
-                          
-                          ],
-                        ),
-                          SizedBox(height:10),
-                             Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  Text("JHON SANCHEZ ALARCON"),
-                                  Row(
-                                    children: [
-                                      Text("75197145"),
-                                      SizedBox(width:8),
-                                      Text("Administrador"),
-                                    ],
-                                  ),
-                              ],
-                            ),
-                                                   
-                      
-                          
-                          ],
-                        ),
-
-                         SizedBox(height:10),
-                             Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  Text("JHON SANCHEZ ALARCON"),
-                                  Row(
-                                    children: [
-                                      Text("75197145"),
-                                      SizedBox(width:8),
-                                      Text("Administrador"),
-                                    ],
-                                  ),
-                              ],
-                            ),
-                            
-                          
-                      
-                          
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.add,
-                          size: 15,
-                        ),
-                        style: ElevatedButton.styleFrom(shape: CircleBorder()),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.edit,
-                          size: 15,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(), padding: EdgeInsets.all(5)),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-
+            CardEvaluadores(),
+            CardParticipantes(),
             Container(
               padding: EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Items de Evaluacion",style: TextStyle(fontSize: 16),),
-                  TextButton.icon(onPressed: () {},
-                  icon: Icon(Icons.add), label:Text("Agregar"))
+                  Text(
+                    "Items de Evaluacion",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  TextButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.add),
+                      label: Text("Agregar"))
                 ],
               ),
             ),
             Container(
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.blueAccent
-              ),
+                  color: Colors.cyan[100],
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 6,
+                      color: Colors.black38,
+                      offset: const Offset(4, 4),
+                    )
+                  ]),
               child: Column(
                 children: [
-                  
-                  Text("Titulos Academicos"),
-
+                  Text(
+                    "Titulos Academicos",
+                    style: TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.bold),
+                  ),
+                  Divider(
+                    indent: 10,
+                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Column(
                         children: [
-                          Row(children: [Text("data1")],),
-                          
-                          Row(children: [Text("data1")],),
-                          Row(children: [Text("data1")],),
-                          Row(children: [Text("data1")],)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                  width: 200,
+                                  child: Text(
+                                    "Magister",
+                                    maxLines: 1,
+                                  )),
+                              SizedBox(width: 10),
+                              const Text("5",
+                                  style: TextStyle(color: Colors.black))
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                  width: 200,
+                                  child: Text(
+                                    "Magister Con titulacion ",
+                                    maxLines: 1,
+                                  )),
+                              SizedBox(width: 10),
+                              const Text(
+                                "4",
+                                style: TextStyle(color: Colors.black),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                  width: 200,
+                                  child: Text(
+                                    "Tecnico con especialidd",
+                                    maxLines: 1,
+                                  )),
+                              SizedBox(width: 10),
+                              const Text("3",
+                                  style: TextStyle(color: Colors.black))
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                  width: 200,
+                                  child: Text(
+                                    "Sin Titulo",
+                                    maxLines: 1,
+                                  )),
+                              SizedBox(width: 10),
+                              const Text(
+                                "2",
+                                style: TextStyle(color: Colors.black),
+                              )
+                            ],
+                          ),
                         ],
                       ),
-                      Column(
-                        children: [
-                          Text("data"),
-                          Text("data"),
-                          Text("data"),
-                        ],
-                      )
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: const [
+                                Text(
+                                  "Peso:",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "80 %",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amberAccent[700],
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amberAccent[700],
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amberAccent[700],
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amberAccent[700],
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
-                    
                   )
-
-                 
                 ],
               ),
             )
-          
-          
-          
-          
           ],
         ),
       ),
