@@ -23,3 +23,4 @@ class ParticipanteModel {
           edad: mapa["edad"],
           especialidad: mapa["especialidad"]);
 }
+
