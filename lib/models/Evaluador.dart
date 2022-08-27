@@ -26,7 +26,7 @@ class EvaluadorModel {
           clave: mapa["clave"],
           jerarquia: mapa["jerarquia"]);
   String nombreCompleto() {
-    String dato = nombre + "" + apellidos;
+    String dato = nombre + " " + apellidos;
     return dato;
   }
 

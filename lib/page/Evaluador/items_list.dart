@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/models/Evaluador.dart';
-import 'package:flutter_proyecto_1/page/Evaluador/action_evaluador.dart';
+
 import 'package:flutter_proyecto_1/page/Participante/update_participante.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
@@ -76,8 +76,8 @@ class ItemsEvaluador extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
+      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
       decoration: BoxDecoration(
           color: dcolorFondoItems,
           borderRadius: BorderRadius.circular(14),
@@ -87,160 +87,52 @@ class ItemsEvaluador extends StatelessWidget {
                 offset: const Offset(4, 4),
                 color: dcolorBordeItems)
           ]),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
+      child: ListTile(
+          leading: CircleAvatar(
+            child: Text("A"),
+          ),
+          title: Text(
+            modelEvalu.nombreCompleto(),
+            maxLines: 1,
+            style: TextStyle(
+              fontSize: 15.0,
+              color: dColorFontPrimary.withOpacity(0.7),
+            ),
+          ),
+          subtitle: Column(
             children: [
               Row(
                 children: [
-                  Row(
-                    children: [
-                      Column(
-                        children: [
-                          SvgPicture.asset('assets/icons/user.svg',
-                              height: 20.0, color: dColorFontPrimary),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Nombre completo:",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14.0,
-                                  color: dColorFontPrimary.withOpacity(0.7),
-                                ),
-                              ),
-                              Text(
-                                modelEvalu.nombreCompleto(),
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: dColorFontPrimary.withOpacity(0.7),
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(width: 5),
-                          Jerarquia()
-                        ],
-                      ),
-                    ],
+                  SvgPicture.asset('assets/icons/id-card.svg',
+                      height: 15.0, color: dColorFontPrimary),
+                  const SizedBox(
+                    width: 2,
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Column(
-                    children: [
-                      SvgPicture.asset('assets/icons/id-card.svg',
-                          height: 20.0, color: dColorFontPrimary),
-                      const SizedBox(
-                        width: 4.0,
-                      )
-                    ],
+                  Text(
+                    modelEvalu.dni,
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: dColorFontPrimary.withOpacity(0.7),
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "DNI:",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12.0,
-                              color: dColorFontPrimary.withOpacity(0.7),
-                            ),
-                          ),
-                          Text(
-                            modelEvalu.dni,
-                            style: TextStyle(
-                              fontSize: 13.0,
-                              color: dColorFontPrimary.withOpacity(0.7),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
+                  SvgPicture.asset('assets/icons/user-badge.svg',
+                      height: 15.0, color: dColorFontPrimary),
+                  Text(
+                    modelEvalu.jerarquia,
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: dColorFontPrimary.withOpacity(0.7),
+                    ),
                   ),
-                  SizedBox(
-                    width: 60,
-                  ),
-                  Row(
-                    children: [
-                      Column(
-                        children: [
-                          SvgPicture.asset('assets/icons/user-badge.svg',
-                              height: 20.0, color: dColorFontPrimary),
-                          const SizedBox(
-                            width: 4.0,
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "JERARQUIA:",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12.0,
-                                  color: dColorFontPrimary.withOpacity(0.7),
-                                ),
-                              ),
-                              Text(
-                                modelEvalu.jerarquia,
-                                style: TextStyle(
-                                  fontSize: 13.0,
-                                  color: dColorFontPrimary.withOpacity(0.7),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  )
                 ],
               ),
+              Jerarquia()
             ],
           ),
-          Container(
-              child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ActionEvaluador(model: modelEvalu)));
-                  },
-                  icon: Icon(Icons.edit))
-            ],
-          ))
-        ],
-      ),
+          trailing: IconButton(onPressed: () {}, icon: Icon(Icons.edit))),
     );
   }
 }

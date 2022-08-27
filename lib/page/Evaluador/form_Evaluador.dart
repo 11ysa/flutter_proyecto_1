@@ -1,24 +1,60 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/Evaluador.dart';
-import 'package:flutter_proyecto_1/models/participante.dart';
-import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
+import '../../db/db_admin.dart';
+import '../../ui/generales/colors.dart';
 import '../../ui/generales/textfield_normal_widget.dart';
 
-class formNuevoEvaluador extends StatefulWidget {
-  ParticipanteModel? modelParticipante;
+class FormEvaluador extends StatefulWidget {
+  EvaluadorModel? eModel;
 
-  formNuevoEvaluador({this.modelParticipante});
+  FormEvaluador({this.eModel});
 
   @override
-  State<formNuevoEvaluador> createState() => _formNuevoJuradoState();
+  State<FormEvaluador> createState() => _FormEvaluadorState();
 }
 
-class _formNuevoJuradoState extends State<formNuevoEvaluador> {
+class _FormEvaluadorState extends State<FormEvaluador> {
+  /* Variables */
+
+  final TextEditingController _nombreController = TextEditingController();
+  final TextEditingController _apellidosController = TextEditingController();
+  final TextEditingController _dniController = TextEditingController();
+  final TextEditingController _areaController = TextEditingController();
+  final TextEditingController _claveController = TextEditingController();
+
   final _formkey = GlobalKey<FormState>();
   int gender = 1;
+
+  /* inicio */
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.eModel != null) {
+      _nombreController.text = widget.eModel!.nombre;
+      _apellidosController.text = widget.eModel!.apellidos;
+      _dniController.text = widget.eModel!.dni;
+      _areaController.text = widget.eModel!.area;
+      _claveController.text = widget.eModel!.clave.toString();
+      switch (widget.eModel!.jerarquia) {
+        case "Colaborador":
+          gender = 2;
+          break;
+        case "Asistente":
+          gender = 3;
+          break;
+
+        default:
+          gender = 1;
+      }
+    }
+  }
+
+  /*procedimientos*/
+
+  //gerarquias
   String jerarqui() {
     switch (gender) {
       case 2:
@@ -38,14 +74,8 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
     }
   }
 
-  TextEditingController _nombreController = TextEditingController();
-  final TextEditingController _apellidosController = TextEditingController();
-  final TextEditingController _dniController = TextEditingController();
-  final TextEditingController _areaController = TextEditingController();
-  final TextEditingController _claveController = TextEditingController();
-
   //insertar nuevo participante
-  registrarEvaluador() {
+  guardarEvaluador() {
     if (_formkey.currentState!.validate()) {
       EvaluadorModel model = EvaluadorModel(
           nombre: _nombreController.text,
@@ -54,26 +84,56 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
           area: _areaController.text,
           clave: int.parse(_claveController.text),
           jerarquia: jerarqui());
-      DBAdmin.db.insertEvaluador(model).then((value) {
-        if (value > 0) {
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.indigo,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
-              duration: const Duration(milliseconds: 1400),
-              behavior: SnackBarBehavior.floating,
-              content: Row(
-                children: const [
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.white,
-                  ),
-                  Text("Evaluador registrado con exito")
-                ],
-              )));
-        }
-      });
+      if (widget.eModel == null) {
+        DBAdmin.db.insertEvaluador(model).then((value) {
+          if (value > 0) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.indigo,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14)),
+                duration: const Duration(milliseconds: 1400),
+                behavior: SnackBarBehavior.floating,
+                content: Row(
+                  children: const [
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Text("Evaluador Registrado con exito")
+                  ],
+                )));
+          }
+        });
+      } else {
+        model.id = widget.eModel!.id!;
+        DBAdmin.db.updateEvaluador(model).then((value) {
+          if (value > 0) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.indigo,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14)),
+                duration: const Duration(milliseconds: 1400),
+                behavior: SnackBarBehavior.floating,
+                content: Row(
+                  children: const [
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Text("Evaluador Modificado con exito")
+                  ],
+                )));
+          }
+        });
+      }
     }
   }
 
@@ -81,7 +141,9 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
   Widget build(BuildContext context) {
     return Container(
       child: AlertDialog(
-        title: Text("Nuevo Evaluador"),
+        title: widget.eModel != null
+            ? Text("Modificar Evaluador")
+            : Text("Nuevo Evaluador"),
         elevation: 10,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         content: Form(
@@ -98,23 +160,18 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                   controller: _nombreController,
                   campoNumerico: false,
                 ),
-                const SizedBox(height: 12.0),
                 TextFieldNormalWidget(
                     hintText: "Apellidos",
-                    icon: "user",
+                    icon: "bx-user-plus",
                     isDNI: false,
                     controller: _apellidosController,
                     campoNumerico: false),
-                const SizedBox(height: 12.0),
                 TextFieldNormalWidget(
                     hintText: "DNI",
                     icon: "id-card",
                     isDNI: true,
                     controller: _dniController,
                     campoNumerico: true),
-                const SizedBox(
-                  height: 12,
-                ),
                 TextFieldNormalWidget(
                     hintText: "Area Trabajo",
                     icon: "bx-ege",
@@ -123,14 +180,12 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                     campoNumerico: false),
                 TextFieldNormalWidget(
                     hintText: "Clave de Acceso",
-                    icon: "bx-ege",
+                    icon: "bx-lock",
                     isDNI: false,
                     controller: _claveController,
                     campoNumerico: true),
-                const SizedBox(
-                  height: 12,
-                ),
                 RadioListTile(
+                    contentPadding: EdgeInsets.all(2),
                     value: 1,
                     groupValue: gender,
                     title: const Text("Jefe"),
@@ -140,6 +195,7 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                       setState(() {});
                     }),
                 RadioListTile(
+                    contentPadding: EdgeInsets.all(2),
                     value: 2,
                     groupValue: gender,
                     title: const Text("Colaborador"),
@@ -149,6 +205,7 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                       setState(() {});
                     }),
                 RadioListTile(
+                    contentPadding: EdgeInsets.all(2),
                     value: 3,
                     groupValue: gender,
                     title: const Text("Asistente"),
@@ -162,7 +219,7 @@ class _formNuevoJuradoState extends State<formNuevoEvaluador> {
                   height: 45,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      registrarEvaluador();
+                      guardarEvaluador();
                     },
                     icon: const Icon(Icons.save),
                     label: const Text("Guardar"),

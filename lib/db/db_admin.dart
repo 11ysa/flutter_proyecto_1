@@ -30,7 +30,7 @@ class DBAdmin {
         txn.execute(
             "CREATE TABLE PARTICIPANTE(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, edad INTEGER, especialidad TEXT)");
         txn.execute(
-            "CREATE TABLE EVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, area TEXT,  clave INTEGER,jerarquia TEXT)");
+            "CREATE TABLE EVALUADOR(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellidos TEXT, dni TEXT, area TEXT,  clave INTEGER,jerarquia TEXT)"); //jerarqui => 1=Jefe 2=Colaborador 3= asistente
         txn.execute(
             "CREATE TABLE CONVOCATORIA(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT,estado TEXT)");
         txn.execute(
@@ -123,7 +123,7 @@ class DBAdmin {
           "apellidos": EvaluadorModel.apellidos,
           "dni": EvaluadorModel.dni,
           "area": EvaluadorModel.area,
-          "calve": EvaluadorModel.clave,
+          "clave": EvaluadorModel.clave,
           "JERARQUIA": EvaluadorModel.jerarquia,
         },
         where: "id=?",

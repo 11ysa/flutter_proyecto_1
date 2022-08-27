@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/Evaluador.dart';
 import 'package:flutter_proyecto_1/page/Evaluador/items_list.dart';
-import 'package:flutter_proyecto_1/page/Evaluador/nuevo_Evaluador.dart';
+
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
+import 'package:flutter_svg/svg.dart';
+
+import 'form_Evaluador.dart';
 
 class HomeEvaluador extends StatefulWidget {
   const HomeEvaluador({Key? key}) : super(key: key);
@@ -14,6 +17,55 @@ class HomeEvaluador extends StatefulWidget {
 }
 
 class _HomeEvaluadorState extends State<HomeEvaluador> {
+  EvaluadorModel? EvalModel;
+  Widget Jerarquia(String jerarquia) {
+    Widget fila;
+    switch (jerarquia) {
+      case "Asistente":
+        fila = Row(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            Icon(Icons.star, size: 14, color: Colors.amber[700]),
+            Icon(Icons.star,
+                size: 14, color: Color.fromARGB(255, 223, 220, 215)),
+            Icon(Icons.star,
+                size: 14, color: Color.fromARGB(255, 223, 220, 215)),
+          ],
+        );
+        break;
+      case "Colaborador":
+        fila = Row(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            Icon(
+              Icons.star,
+              size: 14,
+              color: Colors.amber[700],
+            ),
+            Icon(
+              Icons.star,
+              size: 14,
+              color: Colors.amber[700],
+            ),
+            Icon(Icons.star,
+                size: 14, color: Color.fromARGB(255, 223, 220, 215)),
+          ],
+        );
+        break;
+
+      default:
+        fila = Row(
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            Icon(Icons.star, size: 14, color: Colors.amber[700]),
+            Icon(Icons.star, size: 14, color: Colors.amber[700]),
+            Icon(Icons.star, size: 14, color: Colors.amber[700]),
+          ],
+        );
+    }
+    return fila;
+  }
+
   deleteEvaluador(Context, int id) {
     DBAdmin.db.deleteEvaluador(id).then((value) {
       if (value > 0) {
@@ -29,11 +81,11 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
     });
   }
 
-  showNuevoEvaluador(contex) {
+  showFormEvaluador() {
     showDialog(
-        context: contex,
+        context: context,
         builder: (BuildContext context) {
-          return formNuevoEvaluador();
+          return FormEvaluador(eModel: EvalModel);
         }).then((value) {
       setState(() {});
     });
@@ -48,7 +100,8 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showNuevoEvaluador(context);
+            EvalModel = null;
+            showFormEvaluador();
           },
           child: const Icon(Icons.add),
         ),
@@ -56,9 +109,9 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
             future: DBAdmin.db.getEvaluador(),
             builder: (BuildContext context, AsyncSnapshot snap) {
               if (snap.hasData) {
-                List<EvaluadorModel> evaluModel = snap.data;
+                List<EvaluadorModel> miEvalModel = snap.data;
                 return ListView.builder(
-                    itemCount: evaluModel.length,
+                    itemCount: miEvalModel.length,
                     itemBuilder: (BuildContext context, index) {
                       return Dismissible(
                         key: UniqueKey(),
@@ -67,9 +120,80 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
                         background: Container(color: Colors.redAccent),
                         //finalizar el arrastre
                         onDismissed: (DismissDirection direction) {
-                          deleteEvaluador(context, evaluModel[index].id!);
+                          deleteEvaluador(context, miEvalModel[index].id!);
                         },
-                        child: ItemsEvaluador(modelEvalu: evaluModel[index]),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 2.0, vertical: 2.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 2, vertical: 2),
+                          decoration: BoxDecoration(
+                              color: dcolorFondoItems,
+                              borderRadius: BorderRadius.circular(14),
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 12,
+                                    offset: const Offset(4, 4),
+                                    color: dcolorBordeItems)
+                              ]),
+                          child: ListTile(
+                              leading: CircleAvatar(
+                                child: Text("A"),
+                              ),
+                              title: Text(
+                                miEvalModel[index].nombreCompleto(),
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: dColorFontPrimary.withOpacity(0.7),
+                                ),
+                              ),
+                              subtitle: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                          'assets/icons/id-card.svg',
+                                          height: 15.0,
+                                          color: dColorFontPrimary),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      Text(
+                                        miEvalModel[index].dni,
+                                        style: TextStyle(
+                                          fontSize: 12.0,
+                                          color: dColorFontPrimary
+                                              .withOpacity(0.7),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      SvgPicture.asset(
+                                          'assets/icons/user-badge.svg',
+                                          height: 15.0,
+                                          color: dColorFontPrimary),
+                                      Text(
+                                        miEvalModel[index].jerarquia,
+                                        style: TextStyle(
+                                          fontSize: 12.0,
+                                          color: dColorFontPrimary
+                                              .withOpacity(0.7),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Jerarquia(miEvalModel[index].jerarquia)
+                                ],
+                              ),
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    EvalModel = miEvalModel[index];
+                                    showFormEvaluador();
+                                  },
+                                  icon: Icon(Icons.edit))),
+                        ),
                       );
                     });
               }
