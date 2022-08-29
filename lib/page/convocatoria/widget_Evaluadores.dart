@@ -1,8 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/db/db_admin.dart';
+import 'package:flutter_proyecto_1/models/evaluador.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/lista_evaluadores.dart';
 
-class CardEvaluadores extends StatelessWidget {
-  const CardEvaluadores({Key? key}) : super(key: key);
+import '../../ui/generales/colors.dart';
+
+class CardEvaluadores extends StatefulWidget {
+  @override
+  State<CardEvaluadores> createState() => _CardEvaluadoresState();
+}
+
+class _CardEvaluadoresState extends State<CardEvaluadores> {
+  /* procedimientos */
+  showEvaluadores() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return (ListEvaluadores());
+        });
+  }
+
+  deleteEvaluadorConvocatoria(int id) {
+    DBAdmin.db.deleteConvocatoriaEvaluador(id).then((value) {
+      if (value > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Row(
+          children: const [
+            Icon(Icons.check_circle, color: Colors.white),
+            SizedBox(width: 10),
+            Text("Evaluador Descartado")
+          ],
+        )));
+      }
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,18 +43,22 @@ class CardEvaluadores extends StatelessWidget {
       color: Colors.white54,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       elevation: 5.0,
-      child: Column(
-        children: [
-          ListTile(
-            title: Row(
+      child: Padding(
+        padding: const EdgeInsets.all(2),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 5,
+            ),
+            Row(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
+              children: const [
                 Icon(
                   Icons.supervised_user_circle_outlined,
                   color: Colors.indigo,
                 ),
                 SizedBox(
-                  width: 6,
+                  width: 10,
                 ),
                 Text(
                   "Evaluadores",
@@ -30,88 +67,80 @@ class CardEvaluadores extends StatelessWidget {
                 ),
               ],
             ),
-            minVerticalPadding: 10,
-            subtitle: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Juan Alaber Sanchez alarcon"),
-                          Text(
-                            "75197145",
-                            style: TextStyle(fontSize: 10),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: Colors.yellow[300],
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: Colors.yellow[300],
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 3,
-                  ),
-                ],
-              ),
+            Container(
+              width: 300,
+              height: 100,
+              child: FutureBuilder(
+                  future: DBAdmin.db.getNombreEvaluadores(1),
+                  builder: (BuildContext context, AsyncSnapshot snap) {
+                    if (snap.hasData) {
+                      List<EvaluadorModel> modelEvalu = snap.data;
+                      return ListView.builder(
+                          itemCount: modelEvalu.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return Dismissible(
+                              key: UniqueKey(),
+                              direction: DismissDirection.startToEnd,
+                              background: Container(color: Colors.amber),
+                              onDismissed: (DismissDirection direction) {
+                                deleteEvaluadorConvocatoria(
+                                    modelEvalu[index].id!);
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Divider(
+                                    thickness: 1,
+                                  ),
+                                  Text(modelEvalu[index].nombreCompleto()),
+                                  Row(
+                                    children: [
+                                      // ignore: prefer_const_constructors
+                                      Text(
+                                        modelEvalu[index].dni,
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      JeraquiaStar,
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
             ),
-          ),
-          //botones
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                width: 30,
-                padding: EdgeInsets.all(2),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.edit,
-                    size: 15,
+
+            //botones
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  width: 30,
+                  padding: EdgeInsets.all(2),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showEvaluadores();
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 15,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(), padding: EdgeInsets.all(5)),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(), padding: EdgeInsets.all(5)),
                 ),
-              ),
-              Container(
-                width: 30,
-                padding: EdgeInsets.all(2),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.add,
-                    size: 15,
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(), padding: EdgeInsets.all(5)),
-                ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

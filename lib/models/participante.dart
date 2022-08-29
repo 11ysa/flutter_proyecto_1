@@ -22,5 +22,9 @@ class ParticipanteModel {
           dni: mapa["dni"],
           edad: mapa["edad"],
           especialidad: mapa["especialidad"]);
-}
 
+  String nombreCompleto() {
+    String valor = nombre + " " + apellidos;
+    return valor;
+  }
+}

@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:flutter_proyecto_1/models/Evaluador.dart';
+import 'package:flutter_proyecto_1/models/conevaluador.dart';
+import 'package:flutter_proyecto_1/models/evaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
 import 'package:path/path.dart';
@@ -38,12 +39,117 @@ class DBAdmin {
       });
     });
   }
+
+  /* convoctoria Con evaluador */
+  //insertamos
+  Future<int> insertamosConvocatoriaEvaluador(ConEvaluador conEvaluador) async {
+    Database? db = await checkDatabase();
+    int result = await db!.insert("CONEVALUADOR", {
+      "idevaluador": conEvaluador.idevaluador,
+      "idconvocatoria": conEvaluador.idconvocatoria
+    });
+    return result;
+  }
+
+  //eliminamos
+  Future<int> deleteConvocatoriaEvaluador(int id) async {
+    print("object");
+    print(id);
+    Database? db = await checkDatabase();
+    int res = await db!.delete("CONEVALUADOR", where: "id=$id");
+    return res;
+  }
+
+  //obtenemosConvocatoriaEvaluador Evaluadores de convocatoria
+  Future<List<ConEvaluador>> getConvocatoriasEvaluadores(
+      int idEvalua, int idConvoca) async {
+    Database? db = await checkDatabase();
+
+    List<Map<String, dynamic>> listaBD = await db!.rawQuery(
+        "SELECT * FROM CONEVALUADOR WHERE idevaluador=$idEvalua and idconvocatoria=$idConvoca");
+
+    print(listaBD);
+    List<ConEvaluador> lisModel =
+        listaBD.map((e) => ConEvaluador.deMapAModel(e)).toList();
+    return lisModel;
+  }
+
+  //obtenemosConvocatoriaEvaluador Evaluadores de convocatoria
+  Future<List<EvaluadorModel>> getNombreEvaluadores(int idConvoca) async {
+    Database? db = await checkDatabase();
+    Database? dbe = await checkDatabase();
+    //creamos la lista
+    List<int> lista = [];
+    //obtenemos los evaluadores
+    List<Map<String, dynamic>> listaBD = await db!.rawQuery(
+        "SELECT * FROM CONEVALUADOR WHERE idconvocatoria=$idConvoca GROUP BY idevaluador");
+
+    //agregamos los id del evaluador  a la lista
+    listaBD.forEach((element) {
+      lista.add(element["idevaluador"]);
+    });
+
+    List<Map<String, dynamic>> listaEvalu = await dbe!.rawQuery(
+        "SELECT * FROM EVALUADOR WHERE id IN(${List.filled(lista.length, '?').join(',')})",
+        lista);
+    List<EvaluadorModel> lisModel =
+        listaEvalu.map((e) => EvaluadorModel.deMapAModel(e)).toList();
+
+    print(lisModel);
+    return lisModel;
+  }
+
+  //obtenemosConvocatoriaEvaluador Evaluadores de convocatoria
+  Future<List<ConEvaluador>> getConvocatoriaEvaluador() async {
+    Database? db = await checkDatabase();
+    List<Map<String, dynamic>> listaBD = await db!.query("CONEVALUADOR");
+    print(listaBD);
+    List<ConEvaluador> lisModel =
+        listaBD.map((e) => ConEvaluador.deMapAModel(e)).toList();
+    return lisModel;
+  }
+
+  /* convocatoria */
+  // obtener todas las convocatorias
+  Future<List<ConvocatoriaModel>> getConvocatorias() async {
+    Database? db = await checkDatabase();
+    List<Map<String, dynamic>> listaBD = await db!.query("CONVOCATORIA");
+    print(listaBD);
+    List<ConvocatoriaModel> lisModel =
+        listaBD.map((e) => ConvocatoriaModel.deMapAModel(e)).toList();
+    return lisModel;
+  }
+
+  // obtener una convocatoria
+  Future<List<ConvocatoriaModel>> getConvocatoria(int idConvocatoria) async {
+    Database? db = await checkDatabase();
+    List<Map<String, dynamic>> listaBD = await db!
+        .query("CONVOCATORIA", where: "id=?", whereArgs: [idConvocatoria]);
+    print(listaBD);
+    List<ConvocatoriaModel> lisModel =
+        listaBD.map((e) => ConvocatoriaModel.deMapAModel(e)).toList();
+    return lisModel;
+  }
+
   //insertamos convocatoria
+  Future<int> insertamosConvocatoria(ConvocatoriaModel convocatoria) async {
+    Database? db = await checkDatabase();
+    int result = await db!.insert(
+        "CONVOCATORIA", {"titulo": convocatoria.Titulo, "estado": "Activo"});
+    print(result);
+    return result;
+  }
 
-  //Eliminamos (si no Encuntra otros registros) y/o  desactivamos ()
-  //obtenemos convocatoria con evaluador  con participantes
-  //
+  //modificamos convocatoria
+  Future<int> updateConvocatoria(ConvocatoriaModel convocatoria) async {
+    Database? db = await checkDatabase();
+    int result = await db!.update("CONVOCATORIA",
+        {"titulo": convocatoria.Titulo, "estado": convocatoria.Estado},
+        where: "id=?", whereArgs: [convocatoria.id]);
+    return result;
+  }
 
+  /* participantes */
   //insertar participantes
   Future<int> insertParticipante(ParticipanteModel participante) async {
     Database? db = await checkDatabase();
@@ -80,12 +186,9 @@ class DBAdmin {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> ListaParticipantes =
         await db!.query("PARTICIPANTE");
-    print("object");
-    print(ListaParticipantes);
     List<ParticipanteModel> listParti =
         ListaParticipantes.map((e) => ParticipanteModel.deMapAModel(e))
             .toList();
-
     return listParti;
   }
 

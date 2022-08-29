@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
-import 'package:flutter_proyecto_1/models/Evaluador.dart';
-import 'package:flutter_proyecto_1/page/Evaluador/items_list.dart';
+import 'package:flutter_proyecto_1/models/evaluador.dart';
 
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,8 +9,6 @@ import 'package:flutter_svg/svg.dart';
 import 'form_Evaluador.dart';
 
 class HomeEvaluador extends StatefulWidget {
-  const HomeEvaluador({Key? key}) : super(key: key);
-
   @override
   State<HomeEvaluador> createState() => _HomeEvaluadorState();
 }
@@ -66,10 +63,10 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
     return fila;
   }
 
-  deleteEvaluador(Context, int id) {
+  deleteEvaluador(int id) {
     DBAdmin.db.deleteEvaluador(id).then((value) {
       if (value > 0) {
-        ScaffoldMessenger.of(Context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Row(
           children: const [
             Icon(Icons.check_circle, color: Colors.white),
@@ -120,7 +117,7 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
                         background: Container(color: Colors.redAccent),
                         //finalizar el arrastre
                         onDismissed: (DismissDirection direction) {
-                          deleteEvaluador(context, miEvalModel[index].id!);
+                          deleteEvaluador(miEvalModel[index].id!);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(

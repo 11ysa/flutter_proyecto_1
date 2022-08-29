@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_proyecto_1/page/Evaluador/home_evaluador.dart';
 import 'package:flutter_proyecto_1/page/Participante/home_participante.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/form_Convocatoria.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/home_convocatoria.dart';
 import 'package:flutter_proyecto_1/page/menu_page.dart';
 
@@ -77,7 +78,7 @@ class MyDrawe extends StatelessWidget {
           ListTile(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeParticipante()));
+                  MaterialPageRoute(builder: (context) => HomePaticipante()));
             },
             leading: Icon(
               Icons.person,

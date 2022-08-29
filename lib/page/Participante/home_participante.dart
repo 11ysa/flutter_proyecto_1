@@ -1,24 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/db/db_admin.dart';
-import 'package:flutter_proyecto_1/models/participante.dart';
-import 'package:flutter_proyecto_1/page/Participante/nuevo_participante.dart';
 import 'package:flutter_proyecto_1/page/Participante/widget.dart';
-import 'package:flutter_proyecto_1/ui/generales/colors.dart';
-import 'package:path/path.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../db/db_admin.dart';
+import '../../models/participante.dart';
+import '../../ui/generales/colors.dart';
+import 'form_participante.dart';
 
-import 'items_list.dart';
+class HomePaticipante extends StatefulWidget {
+  HomePaticipante({Key? key}) : super(key: key);
 
-class HomeParticipante extends StatefulWidget {
   @override
-  State<HomeParticipante> createState() => _HomeParticipanteState();
+  State<HomePaticipante> createState() => _HomePaticipanteState();
 }
 
-class _HomeParticipanteState extends State<HomeParticipante> {
-  deleteParticipante(Context, int id) {
+class _HomePaticipanteState extends State<HomePaticipante> {
+  /* Variables */
+  ParticipanteModel? modelParticipante;
+
+  /* Procedimientos */
+
+  //eliminar participante
+
+  deleteParticipante(int id) {
     DBAdmin.db.deleteParticipante(id).then((value) {
       if (value > 0) {
-        ScaffoldMessenger.of(Context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Row(
           children: const [
             Icon(Icons.check_circle, color: Colors.white),
@@ -30,11 +37,12 @@ class _HomeParticipanteState extends State<HomeParticipante> {
     });
   }
 
-  showNuevoParticipante(contex) {
+//Mostrar Formulario
+  showParticipante() {
     showDialog(
-        context: contex,
+        context: context,
         builder: (BuildContext context) {
-          return formNuevoParticipante();
+          return FormParticipante(modelPartici: modelParticipante);
         }).then((value) {
       setState(() {});
     });
@@ -46,7 +54,8 @@ class _HomeParticipanteState extends State<HomeParticipante> {
         appBar: appBarParticipante,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showNuevoParticipante(context);
+            modelParticipante = null;
+            showParticipante();
           },
           child: const Icon(Icons.add),
         ),
@@ -59,24 +68,166 @@ class _HomeParticipanteState extends State<HomeParticipante> {
                     itemCount: listaPar.length,
                     itemBuilder: (BuildContext context, index) {
                       return Dismissible(
-                        key: UniqueKey(),
-                        // confirmDismiss: (DismissDirection direction) async {},
-                        direction: DismissDirection.startToEnd,
-                        background: Container(color: Colors.redAccent),
-                        //finalizar el arrastre
-                        onDismissed: (DismissDirection direction) {
-                          deleteParticipante(context, listaPar[index].id!);
-                        },
-                        child: ItemsParticipante(
-                            id: int.parse(listaPar[index].id.toString()),
-                            // ignore: prefer_interpolation_to_compose_strings
-                            nombreCompleto: listaPar[index].nombre +
-                                " " +
-                                listaPar[index].apellidos,
-                            dni: listaPar[index].dni,
-                            edad: listaPar[index].edad.toString(),
-                            especialidad: listaPar[index].especialidad),
-                      );
+                          key: UniqueKey(),
+                          // confirmDismiss: (DismissDirection direction) async {},
+                          direction: DismissDirection.startToEnd,
+                          background: Container(color: Colors.redAccent),
+                          //finalizar el arrastre
+                          onDismissed: (DismissDirection direction) {
+                            deleteParticipante(listaPar[index].id!);
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 5.0, vertical: 5.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: dcolorFondoItems,
+                                borderRadius: BorderRadius.circular(14),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: dcolorBordeItems,
+                                    blurRadius: 12,
+                                    offset: const Offset(4, 4),
+                                  )
+                                ]),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/icons/user.svg',
+                                            height: 16.0,
+                                            color: dColorFontPrimary),
+                                        const SizedBox(
+                                          width: 4.0,
+                                        ),
+                                        Text(
+                                          listaPar[index].nombreCompleto(),
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: dColorFontPrimary
+                                                .withOpacity(0.7),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/icons/id-card.svg',
+                                            height: 16.0,
+                                            color: dColorFontPrimary),
+                                        const SizedBox(
+                                          width: 4.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "DNI:",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12.0,
+                                                    color: dColorFontPrimary
+                                                        .withOpacity(0.7),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  listaPar[index].dni,
+                                                  style: TextStyle(
+                                                    fontSize: 13.0,
+                                                    color: dColorFontPrimary
+                                                        .withOpacity(0.7),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Edad:",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14.0,
+                                                    color: dColorFontPrimary
+                                                        .withOpacity(0.7),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  listaPar[index]
+                                                      .edad
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    color: dColorFontPrimary
+                                                        .withOpacity(0.7),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Especialidad:",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14.0,
+                                                    color: dColorFontPrimary
+                                                        .withOpacity(0.7),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  listaPar[index].especialidad,
+                                                  style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    color: dColorFontPrimary
+                                                        .withOpacity(0.7),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                    child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          modelParticipante = listaPar[index];
+                                          showParticipante();
+                                        },
+                                        icon: Icon(Icons.edit))
+                                  ],
+                                ))
+                              ],
+                            ),
+                          ));
                     });
               }
 

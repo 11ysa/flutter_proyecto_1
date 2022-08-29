@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/models/Evaluador.dart';
+import 'package:flutter_proyecto_1/models/evaluador.dart';
 
 import '../../db/db_admin.dart';
 import '../../ui/generales/colors.dart';

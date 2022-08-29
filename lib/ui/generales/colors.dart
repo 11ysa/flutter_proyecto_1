@@ -15,3 +15,18 @@ Color dcolorTitulo = const Color(0xff21293A).withOpacity(0.85);
 
 Color dColorFontPrimary = const Color(0xff21293A);
 Color dColorBrandPrimary = const Color(0xff7248E5);
+
+Widget JeraquiaStar = Row(
+  children: [
+    Icon(
+      Icons.star,
+      size: 14,
+      color: Colors.amber[700],
+    ),
+    Icon(
+      Icons.star,
+      size: 14,
+      color: Colors.amber[700],
+    ),
+  ],
+);
