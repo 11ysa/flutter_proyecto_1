@@ -7,6 +7,8 @@ import 'package:flutter_proyecto_1/page/convocatoria/lista_evaluadores.dart';
 import '../../ui/generales/colors.dart';
 
 class CardEvaluadores extends StatefulWidget {
+  int? idConvocatoria;
+  CardEvaluadores({this.idConvocatoria});
   @override
   State<CardEvaluadores> createState() => _CardEvaluadoresState();
 }
@@ -35,6 +37,13 @@ class _CardEvaluadoresState extends State<CardEvaluadores> {
       }
       setState(() {});
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.idConvocatoria);
   }
 
   @override
@@ -71,7 +80,7 @@ class _CardEvaluadoresState extends State<CardEvaluadores> {
               width: 300,
               height: 100,
               child: FutureBuilder(
-                  future: DBAdmin.db.getNombreEvaluadores(1),
+                  future: DBAdmin.db.getNombreEvaluadores(43),
                   builder: (BuildContext context, AsyncSnapshot snap) {
                     if (snap.hasData) {
                       List<EvaluadorModel> modelEvalu = snap.data;

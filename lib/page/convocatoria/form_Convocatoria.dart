@@ -8,23 +8,29 @@ import 'package:flutter_proyecto_1/page/convocatoria/widget_Evaluadores.dart';
 import '../../ui/generales/colors.dart';
 
 class FormConvocatoria extends StatefulWidget {
-  FormConvocatoria({Key? key}) : super(key: key);
+  int? idConvocatoria;
+  String? textConvocatoria;
+
+  FormConvocatoria({this.idConvocatoria, this.textConvocatoria});
 
   @override
   State<FormConvocatoria> createState() => _FormConvocatoriaState();
 }
 
 class _FormConvocatoriaState extends State<FormConvocatoria> {
+  //variables Globales
+  final TextEditingController _tituConvocato = TextEditingController();
+
   //procedimientos
   guardarConvocatoria() {
     //titulo
-    ConvocatoriaModel modelConvocatoria =
-        ConvocatoriaModel(Titulo: "Estadistica", Estado: "Activo");
-    DBAdmin.db.insertamosConvocatoria(modelConvocatoria);
+    ConvocatoriaModel modelConvocatoria = ConvocatoriaModel(
+        id: widget.idConvocatoria, Titulo: "Estadistica", Estado: "Activo");
+    DBAdmin.db.updateConvocatoria(modelConvocatoria);
 
     //evaluadores
     ConEvaluador modelConEvaluador =
-        ConEvaluador(idevaluador: 1, idconvocatoria: 2);
+        ConEvaluador(idevaluador: 1, idconvocatoria: widget.idConvocatoria!);
     DBAdmin.db.insertamosConvocatoriaEvaluador(modelConEvaluador);
   }
 
@@ -53,6 +59,14 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
     DBAdmin.db.getConvocatoriaEvaluador();
   }
 
+  //inicio
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tituConvocato.text = widget.textConvocatoria.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +82,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
             TextField(
               style: TextStyle(fontSize: 18),
               maxLines: 1,
+              controller: _tituConvocato,
               decoration: InputDecoration(
                   hintText: "Titulo de convocatoria",
                   suffixIcon: Icon(Icons.work),
@@ -77,7 +92,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14))),
             ),
-            CardEvaluadores(),
+            CardEvaluadores(idConvocatoria: widget.idConvocatoria),
             ElevatedButton(
                 onPressed: () {
                   guardarConvocatoria();

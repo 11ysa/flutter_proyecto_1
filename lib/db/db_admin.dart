@@ -75,12 +75,13 @@ class DBAdmin {
   }
 
   //obtenemosConvocatoriaEvaluador Evaluadores de convocatoria
-  Future<List<EvaluadorModel>> getNombreEvaluadores(int idConvoca) async {
+  Future<List<EvaluadorModel>> getNombreEvaluadores(int? idConvoca) async {
     Database? db = await checkDatabase();
     Database? dbe = await checkDatabase();
     //creamos la lista
     List<int> lista = [];
     //obtenemos los evaluadores
+
     List<Map<String, dynamic>> listaBD = await db!.rawQuery(
         "SELECT * FROM CONEVALUADOR WHERE idconvocatoria=$idConvoca GROUP BY idevaluador");
 
@@ -95,7 +96,6 @@ class DBAdmin {
     List<EvaluadorModel> lisModel =
         listaEvalu.map((e) => EvaluadorModel.deMapAModel(e)).toList();
 
-    print(lisModel);
     return lisModel;
   }
 
@@ -134,10 +134,16 @@ class DBAdmin {
   //insertamos convocatoria
   Future<int> insertamosConvocatoria(ConvocatoriaModel convocatoria) async {
     Database? db = await checkDatabase();
+    Database? db2 = await checkDatabase();
     int result = await db!.insert(
         "CONVOCATORIA", {"titulo": convocatoria.Titulo, "estado": "Activo"});
-    print(result);
-    return result;
+
+    List id =
+        await db2!.rawQuery("SELECT last_insert_rowid() FROM CONVOCATORIA");
+
+    print(id[0]["last_insert_rowid()"]);
+
+    return (id[0]["last_insert_rowid()"]);
   }
 
   //modificamos convocatoria
