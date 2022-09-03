@@ -8,11 +8,8 @@ import 'package:flutter_proyecto_1/page/convocatoria/widget_Evaluadores.dart';
 import '../../ui/generales/colors.dart';
 
 class FormConvocatoria extends StatefulWidget {
-  int? idConvocatoria; //variable de nuevo
-  String? textConvocatoria; //varaible de nuevo
   ConvocatoriaModel? modelConvo; //modelo de editar
-  FormConvocatoria(
-      {this.idConvocatoria, this.textConvocatoria, this.modelConvo});
+  FormConvocatoria({this.modelConvo});
 
   @override
   State<FormConvocatoria> createState() => _FormConvocatoriaState();
@@ -26,13 +23,17 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
   guardarConvocatoria() {
     //titulo
     ConvocatoriaModel modelConvocatoria = ConvocatoriaModel(
-        id: widget.idConvocatoria, Titulo: "Estadistica", Estado: "Activo");
+        id: widget.modelConvo!.id,
+        Titulo: _tituConvocato.text,
+        Estado: "Activo");
     DBAdmin.db.updateConvocatoria(modelConvocatoria);
 
     //evaluadores
+    /*
     ConEvaluador modelConEvaluador =
-        ConEvaluador(idevaluador: 1, idconvocatoria: widget.idConvocatoria!);
+        ConEvaluador(idevaluador: 1, idconvocatoria: widget.modelConvo.id);
     DBAdmin.db.insertamosConvocatoriaEvaluador(modelConEvaluador);
+  */
   }
 
   obtenemosConvocatoria() {
@@ -67,11 +68,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
     super.initState();
     if (widget.modelConvo != null) {
       _tituConvocato.text = widget.modelConvo!.Titulo;
-    } else {
-      _tituConvocato.text = widget.textConvocatoria.toString();
     }
-    print("objectddddd");
-    print(widget.textConvocatoria.toString());
   }
 
   @override
@@ -99,11 +96,9 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14))),
             ),
-            widget.modelConvo != null
-                ? CardEvaluadores(
-                    idConvocatoria: widget.modelConvo!.id,
-                  )
-                : CardEvaluadores(idConvocatoria: widget.idConvocatoria),
+            CardEvaluadores(
+              idConvocatoria: widget.modelConvo!.id,
+            ),
             ElevatedButton(
                 onPressed: () {
                   guardarConvocatoria();
