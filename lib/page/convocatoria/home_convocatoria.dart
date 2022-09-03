@@ -98,14 +98,31 @@ class _HomeConvocatoriaState extends State<HomeConvocatoria> {
           child: const Icon(Icons.add),
         ),
         body: FutureBuilder(
-          future: DBAdmin.db.getConvocatorias(),
-          builder: (BuildContext context, AsyncSnapshot snap) {
-            return ListView.builder(
-                itemCount: 5,
-                itemBuilder: (BuildContext context, index) {
-                  return Text("data");
-                });
-          },
-        ));
+            future: DBAdmin.db.getConvocatorias(),
+            builder: (BuildContext context, AsyncSnapshot snap) {
+              if (snap.data != null) {
+                List<ConvocatoriaModel> model = snap.data;
+                return ListView.builder(
+                    itemCount: model.length,
+                    itemBuilder: (BuildContext context, index) {
+                      return ListTile(
+                          title: Text(model[index].Titulo),
+                          trailing: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            FormConvocatoria(
+                                              modelConvo: model[index],
+                                            )));
+                              },
+                              icon: const Icon(Icons.edit)));
+                    });
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }));
   }
 }

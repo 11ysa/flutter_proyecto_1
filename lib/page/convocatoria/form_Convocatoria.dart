@@ -8,10 +8,11 @@ import 'package:flutter_proyecto_1/page/convocatoria/widget_Evaluadores.dart';
 import '../../ui/generales/colors.dart';
 
 class FormConvocatoria extends StatefulWidget {
-  int? idConvocatoria;
-  String? textConvocatoria;
-
-  FormConvocatoria({this.idConvocatoria, this.textConvocatoria});
+  int? idConvocatoria; //variable de nuevo
+  String? textConvocatoria; //varaible de nuevo
+  ConvocatoriaModel? modelConvo; //modelo de editar
+  FormConvocatoria(
+      {this.idConvocatoria, this.textConvocatoria, this.modelConvo});
 
   @override
   State<FormConvocatoria> createState() => _FormConvocatoriaState();
@@ -64,7 +65,13 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tituConvocato.text = widget.textConvocatoria.toString();
+    if (widget.modelConvo != null) {
+      _tituConvocato.text = widget.modelConvo!.Titulo;
+    } else {
+      _tituConvocato.text = widget.textConvocatoria.toString();
+    }
+    print("objectddddd");
+    print(widget.textConvocatoria.toString());
   }
 
   @override
@@ -92,7 +99,11 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14))),
             ),
-            CardEvaluadores(idConvocatoria: widget.idConvocatoria),
+            widget.modelConvo != null
+                ? CardEvaluadores(
+                    idConvocatoria: widget.modelConvo!.id,
+                  )
+                : CardEvaluadores(idConvocatoria: widget.idConvocatoria),
             ElevatedButton(
                 onPressed: () {
                   guardarConvocatoria();

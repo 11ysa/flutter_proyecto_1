@@ -19,7 +19,9 @@ class _CardEvaluadoresState extends State<CardEvaluadores> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return (ListEvaluadores());
+          return (ListEvaluadores(
+            idconvocatoria: widget.idConvocatoria,
+          ));
         });
   }
 
@@ -80,7 +82,8 @@ class _CardEvaluadoresState extends State<CardEvaluadores> {
               width: 300,
               height: 100,
               child: FutureBuilder(
-                  future: DBAdmin.db.getNombreEvaluadores(43),
+                  future:
+                      DBAdmin.db.getNombreEvaluadores(widget.idConvocatoria),
                   builder: (BuildContext context, AsyncSnapshot snap) {
                     if (snap.hasData) {
                       List<EvaluadorModel> modelEvalu = snap.data;
