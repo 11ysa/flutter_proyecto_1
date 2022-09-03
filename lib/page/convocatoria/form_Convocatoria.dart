@@ -66,9 +66,8 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.modelConvo != null) {
-      _tituConvocato.text = widget.modelConvo!.Titulo;
-    }
+    print("todos");
+    print(widget.modelConvo!.id);
   }
 
   @override
@@ -96,9 +95,11 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14))),
             ),
+         
             CardEvaluadores(
-              idConvocatoria: widget.modelConvo!.id,
+              idConvocatoria:widget.modelConvo!.id,
             ),
+
             ElevatedButton(
                 onPressed: () {
                   guardarConvocatoria();

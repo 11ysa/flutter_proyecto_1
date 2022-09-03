@@ -10,9 +10,9 @@ import '../../models/evaluador.dart';
 import '../../ui/generales/colors.dart';
 
 class ListEvaluadores extends StatefulWidget {
+ 
   int? idconvocatoria;
   String? textConvocatoria;
-
   ListEvaluadores({this.idconvocatoria, this.textConvocatoria});
 
   @override
@@ -69,10 +69,11 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
     return fila;
   }
 
-  InsertarEvaluConvoca(int ideval) {
+
+ InsertarEvaluConvoca(int ideval) {
     ConEvaluador model = ConEvaluador(
         idevaluador: ideval, idconvocatoria: widget.idconvocatoria!);
-    DBAdmin.db.insertamosConvocatoriaEvaluador(model).then((value) {
+     DBAdmin.db.insertamosConvocatoriaEvaluador(model).then((value) {
       if (value > 0) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Row(
@@ -184,7 +185,7 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
                 height: 54,
                 child: ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.push(
+                     /* Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context) =>
@@ -193,7 +194,7 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
                                     textConvocatoria: widget.textConvocatoria,
                                     modelConvo: null,
                                   )));
-                    },
+                    */},
                     style: ElevatedButton.styleFrom(
                         primary: dcolorAppBar,
                         shape: RoundedRectangleBorder(
