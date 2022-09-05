@@ -9,39 +9,36 @@ import 'package:google_fonts/google_fonts.dart';
 
 class HomeConvocatoria extends StatefulWidget {
   const HomeConvocatoria({Key? key}) : super(key: key);
-
   @override
   State<HomeConvocatoria> createState() => _HomeConvocatoriaState();
 }
 
 class _HomeConvocatoriaState extends State<HomeConvocatoria> {
   final _formkey = GlobalKey<FormState>();
-  ConvocatoriaModel? model; 
+  ConvocatoriaModel? model;
   final TextEditingController _tituConvocatoria = TextEditingController();
 
   guardarTitulo() {
     if (_formkey.currentState!.validate()) {
-      ConvocatoriaModel model = ConvocatoriaModel(Titulo: _tituConvocatoria.text, Estado: "Activo");
+      ConvocatoriaModel model =
+          ConvocatoriaModel(Titulo: _tituConvocatoria.text, Estado: "Activo");
       String dato = _tituConvocatoria.text;
-                    _tituConvocatoria.clear();
-      
+      _tituConvocatoria.clear();
+
       DBAdmin.db.insertamosConvocatoria(model).then(
         (value) {
           if (value >= 0) {
-           ConvocatoriaModel modelo2 =ConvocatoriaModel(id: value,Titulo: dato,Estado: "Pendiente");
+            ConvocatoriaModel modelo2 =
+                ConvocatoriaModel(id: value, Titulo: dato, Estado: "Pendiente");
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                      builder: (BuildContext context) => FormConvocatoria(
-                      modelConvo: modelo2,
-                     )));
-   
+                    builder: (BuildContext context) => FormConvocatoria(
+                          modelConvo: modelo2,
+                        )));
           }
-   
         },
-   
       );
-
     }
   }
 
@@ -94,8 +91,7 @@ class _HomeConvocatoriaState extends State<HomeConvocatoria> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          
-          title:const Text("Lista de Convocatorias"),
+          title: const Text("Lista de Convocatorias"),
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
@@ -106,29 +102,33 @@ class _HomeConvocatoriaState extends State<HomeConvocatoria> {
         ),
         body: FutureBuilder(
           future: DBAdmin.db.getConvocatorias(),
-         
           builder: (BuildContext context, AsyncSnapshot snap) {
-
-            if(snap.hasData){
-               List<ConvocatoriaModel> listaConvo=snap.data;
-                return ListView.builder(
-                itemCount: listaConvo.length,
-                itemBuilder: (BuildContext context, index) {
-                  return ListTile(
-                    title:Text(listaConvo[index].Titulo),
-                    trailing:  IconButton(onPressed: (){
-                     model=ConvocatoriaModel(id: listaConvo[index].id, Titulo: listaConvo[index].Titulo, Estado: "Activo");
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=> FormConvocatoria(modelConvo:model)));
-                    }, 
-                    icon:const Icon(Icons.edit)),
-                  );
-                });
-
+            if (snap.hasData) {
+              List<ConvocatoriaModel> listaConvo = snap.data;
+              return ListView.builder(
+                  itemCount: listaConvo.length,
+                  itemBuilder: (BuildContext context, index) {
+                    return ListTile(
+                      title: Text(listaConvo[index].Titulo),
+                      trailing: IconButton(
+                          onPressed: () {
+                            model = ConvocatoriaModel(
+                                id: listaConvo[index].id,
+                                Titulo: listaConvo[index].Titulo,
+                                Estado: "Editar");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        FormConvocatoria(modelConvo: model)));
+                          },
+                          icon: const Icon(Icons.edit)),
+                    );
+                  });
             }
             return const Center(
-                child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             );
-        
           },
         ));
   }

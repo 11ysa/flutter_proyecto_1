@@ -1,8 +1,58 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/models/convocatoria.dart';
+import 'package:flutter_proyecto_1/models/participante.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/lista_participantes.dart';
 
-class CardParticipantes extends StatelessWidget {
-  const CardParticipantes({Key? key}) : super(key: key);
+import '../../db/db_admin.dart';
+
+class CardParticipantes extends StatefulWidget {
+  ConvocatoriaModel? model;
+
+  CardParticipantes({this.model});
+
+  @override
+  State<CardParticipantes> createState() => _CardParticipantesState();
+}
+
+class _CardParticipantesState extends State<CardParticipantes> {
+  //variables
+  int? idconvocatoria;
+  /* procedimientos */
+  showParticipantes() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return (ListParticipantes(
+            model: widget.model,
+          ));
+        });
+  }
+
+  deleteParticipanteConvocatoria(int idConvocatoria, int idparticipante) {
+    DBAdmin.db
+        .deleteConvocatoriaParticipante(idConvocatoria, idparticipante)
+        .then((value) {
+      if (value > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Row(
+          children: const [
+            Icon(Icons.check_circle, color: Colors.white),
+            SizedBox(width: 10),
+            Text("Participante Descartado")
+          ],
+        )));
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    idconvocatoria = widget.model!.id;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,18 +60,22 @@ class CardParticipantes extends StatelessWidget {
       color: Colors.white54,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       elevation: 5.0,
-      child: Column(
-        children: [
-          ListTile(
-            title: Row(
+      child: Padding(
+        padding: const EdgeInsets.all(2),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 5,
+            ),
+            Row(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
+              children: const [
                 Icon(
-                  Icons.person_pin_outlined,
+                  Icons.person,
                   color: Colors.indigo,
                 ),
                 SizedBox(
-                  width: 6,
+                  width: 10,
                 ),
                 Text(
                   "Participantes",
@@ -30,78 +84,85 @@ class CardParticipantes extends StatelessWidget {
                 ),
               ],
             ),
-            minLeadingWidth: 1,
-            minVerticalPadding: 10,
-            subtitle: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Juan Alaber Sanchez alarcon",
-                            maxLines: 1,
-                          ),
-                          Text(
-                            "75197145",
-                            style: TextStyle(fontSize: 10),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      Expanded(
-                          flex: 1,
-                          child: Container(
-                              color: Colors.amberAccent,
-                              child: Text(
-                                "Ing. Telecominicacio",
-                                maxLines: 1,
-                              ))),
-                    ],
-                  ),
-                ],
-              ),
+            Container(
+              width: 300,
+              height: 100,
+              child: FutureBuilder(
+                  future: DBAdmin.db.getNombreParticipantes(widget.model!.id),
+                  builder: (BuildContext context, AsyncSnapshot snap) {
+                    if (snap.hasData) {
+                      List<ParticipanteModel> modelListPartic = snap.data;
+                      return ListView.builder(
+                          itemCount: modelListPartic.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return Dismissible(
+                              key: UniqueKey(),
+                              direction: DismissDirection.startToEnd,
+                              background: Container(color: Colors.amber),
+                              onDismissed: (DismissDirection direction) {
+                                deleteParticipanteConvocatoria(idconvocatoria!,
+                                    modelListPartic[index].id!);
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Divider(
+                                    thickness: 1,
+                                  ),
+                                  Text(modelListPartic[index].nombreCompleto()),
+                                  Row(
+                                    children: [
+                                      // ignore: prefer_const_constructors
+                                      Text(
+                                        modelListPartic[index].dni,
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Text(
+                                        modelListPartic[index].especialidad,
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
             ),
-          ),
-          //botones
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                width: 30,
-                padding: EdgeInsets.all(2),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.edit,
-                    size: 15,
+
+            //botones
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(""),
+                const Icon(Icons.arrow_downward),
+                Container(
+                  width: 30,
+                  padding: EdgeInsets.all(2),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showParticipantes();
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 15,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(), padding: EdgeInsets.all(5)),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(), padding: EdgeInsets.all(5)),
                 ),
-              ),
-              Container(
-                width: 30,
-                padding: EdgeInsets.all(2),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.add,
-                    size: 15,
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(), padding: EdgeInsets.all(5)),
-                ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

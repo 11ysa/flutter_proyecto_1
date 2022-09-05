@@ -1,13 +1,14 @@
-class ConEvaluador {
+class ConEvaluadorModel {
   int? id;
   int idevaluador;
   int idconvocatoria;
 
-  ConEvaluador(
+  ConEvaluadorModel(
       {this.id, required this.idevaluador, required this.idconvocatoria});
 
-  factory ConEvaluador.deMapAModel(Map<String, dynamic> mapa) => ConEvaluador(
-      id: mapa["id"],
-      idevaluador: mapa["idevaluador"],
-      idconvocatoria: mapa["idconvocatoria"]);
+  factory ConEvaluadorModel.deMapAModel(Map<String, dynamic> mapa) =>
+      ConEvaluadorModel(
+          id: mapa["id"],
+          idevaluador: mapa["idevaluador"],
+          idconvocatoria: mapa["idconvocatoria"]);
 }

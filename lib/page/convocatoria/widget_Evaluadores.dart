@@ -2,31 +2,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/evaluador.dart';
+import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/lista_evaluadores.dart';
 
 import '../../ui/generales/colors.dart';
 
 class CardEvaluadores extends StatefulWidget {
-  int? idConvocatoria;
-  CardEvaluadores({this.idConvocatoria});
+  ConvocatoriaModel? model;
+
+  CardEvaluadores({this.model});
+
   @override
   State<CardEvaluadores> createState() => _CardEvaluadoresState();
 }
 
 class _CardEvaluadoresState extends State<CardEvaluadores> {
+  //variables
+  int? idconvocatoria;
   /* procedimientos */
   showEvaluadores() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return (ListEvaluadores(
-            idconvocatoria: widget.idConvocatoria,
+            model: widget.model,
           ));
         });
   }
 
-  deleteEvaluadorConvocatoria(int id) {
-    DBAdmin.db.deleteConvocatoriaEvaluador(id).then((value) {
+  deleteEvaluadorConvocatoria(int idConvocatoria, int idevaluador) {
+    DBAdmin.db
+        .deleteConvocatoriaEvaluador(idConvocatoria, idevaluador)
+        .then((value) {
       if (value > 0) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Row(
@@ -45,7 +52,7 @@ class _CardEvaluadoresState extends State<CardEvaluadores> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.idConvocatoria);
+    idconvocatoria = widget.model!.id;
   }
 
   @override
@@ -82,8 +89,7 @@ class _CardEvaluadoresState extends State<CardEvaluadores> {
               width: 300,
               height: 100,
               child: FutureBuilder(
-                  future:
-                      DBAdmin.db.getNombreEvaluadores(widget.idConvocatoria),
+                  future: DBAdmin.db.getNombreEvaluadores(widget.model!.id),
                   builder: (BuildContext context, AsyncSnapshot snap) {
                     if (snap.hasData) {
                       List<EvaluadorModel> modelEvalu = snap.data;
@@ -96,7 +102,7 @@ class _CardEvaluadoresState extends State<CardEvaluadores> {
                               background: Container(color: Colors.amber),
                               onDismissed: (DismissDirection direction) {
                                 deleteEvaluadorConvocatoria(
-                                    modelEvalu[index].id!);
+                                    idconvocatoria!, modelEvalu[index].id!);
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,8 +138,10 @@ class _CardEvaluadoresState extends State<CardEvaluadores> {
             //botones
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                const Text(""),
+                const Icon(Icons.arrow_downward),
                 Container(
                   width: 30,
                   padding: EdgeInsets.all(2),

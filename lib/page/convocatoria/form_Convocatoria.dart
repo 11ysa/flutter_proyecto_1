@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
+import 'package:flutter_proyecto_1/models/participante.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/home_convocatoria.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/widget_Evaluadores.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/widget_Participantes.dart';
 
 import '../../ui/generales/colors.dart';
 
 class FormConvocatoria extends StatefulWidget {
-  ConvocatoriaModel? modelConvo; //modelo de editar
+  ConvocatoriaModel? modelConvo;
+  //modelo de editar
   FormConvocatoria({this.modelConvo});
 
   @override
@@ -66,18 +70,25 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("todos");
-    print(widget.modelConvo!.id);
+    setState(() {});
+    _tituConvocato.text = widget.modelConvo!.Titulo;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Registrar Convocatoria"),
-        centerTitle: true,
-        backgroundColor: dcolorAppBar,
-      ),
+          title: Text("Registrar Convocatoria"),
+          centerTitle: true,
+          backgroundColor: dcolorAppBar,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => HomeConvocatoria()));
+              },
+              icon: Icon(Icons.arrow_back))),
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -95,11 +106,12 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14))),
             ),
-         
-            CardEvaluadores(
-              idConvocatoria:widget.modelConvo!.id,
+            CardEvaluadores(model: widget.modelConvo),
+            CardParticipantes(model: widget.modelConvo),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(children: [Text("data")]),
             ),
-
             ElevatedButton(
                 onPressed: () {
                   guardarConvocatoria();

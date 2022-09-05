@@ -1,79 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/models/conevaluador.dart';
+import 'package:flutter_proyecto_1/models/conparticipante.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/form_Convocatoria.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/home_Convocatoria.dart';
+import 'package:flutter_proyecto_1/models/participante.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../db/db_admin.dart';
-import '../../models/evaluador.dart';
 import '../../ui/generales/colors.dart';
+import 'form_Convocatoria.dart';
 
-class ListEvaluadores extends StatefulWidget {
+class ListParticipantes extends StatefulWidget {
   ConvocatoriaModel? model;
-  ListEvaluadores({this.model});
+  ListParticipantes({this.model});
 
   @override
-  State<ListEvaluadores> createState() => _ListEvaluadoresState();
+  State<ListParticipantes> createState() => _ListParticipantesState();
 }
 
-class _ListEvaluadoresState extends State<ListEvaluadores> {
+class _ListParticipantesState extends State<ListParticipantes> {
   //variables
   int? idConvo;
   //procedimientos
-  Widget Jerarquia(String jerarquia) {
-    Widget fila;
-    switch (jerarquia) {
-      case "Asistente":
-        fila = Row(
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [
-            Icon(Icons.star, size: 14, color: Colors.amber[700]),
-            Icon(Icons.star,
-                size: 14, color: Color.fromARGB(255, 223, 220, 215)),
-            Icon(Icons.star,
-                size: 14, color: Color.fromARGB(255, 223, 220, 215)),
-          ],
-        );
-        break;
-      case "Colaborador":
-        fila = Row(
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [
-            Icon(
-              Icons.star,
-              size: 14,
-              color: Colors.amber[700],
-            ),
-            Icon(
-              Icons.star,
-              size: 14,
-              color: Colors.amber[700],
-            ),
-            Icon(Icons.star,
-                size: 14, color: Color.fromARGB(255, 223, 220, 215)),
-          ],
-        );
-        break;
 
-      default:
-        fila = Row(
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [
-            Icon(Icons.star, size: 14, color: Colors.amber[700]),
-            Icon(Icons.star, size: 14, color: Colors.amber[700]),
-            Icon(Icons.star, size: 14, color: Colors.amber[700]),
-          ],
-        );
-    }
-    return fila;
-  }
+  InsertarPartiConvoca(int idPart) {
+    ConParticipanteModel model =
+        ConParticipanteModel(idparticipante: idPart, idconvocatoria: idConvo);
 
-  InsertarEvaluConvoca(int ideval) {
-    ConEvaluadorModel model =
-        ConEvaluadorModel(idevaluador: ideval, idconvocatoria: idConvo!);
-    DBAdmin.db.insertamosConvocatoriaEvaluador(model).then((value) {
+    DBAdmin.db.insertamosConvocatoriaParticipante(model).then((value) {
       if (value > 0) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Row(
@@ -83,7 +36,7 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
               color: Colors.white,
             ),
             SizedBox(width: 10),
-            Text("Evaluador Agregado")
+            Text("Participante Agregado")
           ],
         )));
       }
@@ -101,20 +54,20 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
   Widget build(BuildContext context) {
     return Container(
       child: AlertDialog(
-          title: const Text("Designar Evaluadores"),
+          title: const Text("Designar Participantes"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               FutureBuilder(
-                  future: DBAdmin.db.getEvaluador(),
+                  future: DBAdmin.db.getParticipante(),
                   builder: (BuildContext context, AsyncSnapshot snap) {
                     if (snap.hasData) {
-                      List<EvaluadorModel> miEvalModel = snap.data;
+                      List<ParticipanteModel> miPartModel = snap.data;
                       return Container(
                         height: 450,
                         width: 400,
                         child: ListView.builder(
-                            itemCount: miEvalModel.length,
+                            itemCount: miPartModel.length,
                             itemBuilder: (BuildContext context, index) {
                               return Dismissible(
                                 key: UniqueKey(),
@@ -123,12 +76,12 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
                                 background: Container(color: Colors.amber),
                                 //finalizar el arrastre
                                 onDismissed: (DismissDirection direction) {
-                                  InsertarEvaluConvoca(miEvalModel[index].id!);
+                                  InsertarPartiConvoca(miPartModel[index].id!);
                                 },
 
                                 child: ListTile(
                                     title: Text(
-                                      miEvalModel[index].nombreCompleto(),
+                                      miPartModel[index].nombreCompleto(),
                                       maxLines: 1,
                                       style: TextStyle(
                                         fontSize: 15.0,
@@ -148,7 +101,7 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
                                               width: 2,
                                             ),
                                             Text(
-                                              miEvalModel[index].dni,
+                                              miPartModel[index].dni,
                                               style: TextStyle(
                                                 fontSize: 12.0,
                                                 color: dColorFontPrimary
@@ -163,7 +116,7 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
                                                 height: 15.0,
                                                 color: dColorFontPrimary),
                                             Text(
-                                              miEvalModel[index].jerarquia,
+                                              miPartModel[index].especialidad,
                                               style: TextStyle(
                                                 fontSize: 12.0,
                                                 color: dColorFontPrimary
@@ -172,7 +125,6 @@ class _ListEvaluadoresState extends State<ListEvaluadores> {
                                             ),
                                           ],
                                         ),
-                                        Jerarquia(miEvalModel[index].jerarquia)
                                       ],
                                     ),
                                     trailing: IconButton(
