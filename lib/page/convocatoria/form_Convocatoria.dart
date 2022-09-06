@@ -7,6 +7,8 @@ import 'package:flutter_proyecto_1/models/participante.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/home_convocatoria.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/widget_Evaluadores.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/widget_Participantes.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/widget_items.dart';
+import 'package:flutter_proyecto_1/page/menu_page.dart';
 
 import '../../ui/generales/colors.dart';
 
@@ -89,50 +91,73 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                         builder: (BuildContext context) => HomeConvocatoria()));
               },
               icon: Icon(Icons.arrow_back))),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            TextField(
-              style: TextStyle(fontSize: 18),
-              maxLines: 1,
-              controller: _tituConvocato,
-              decoration: InputDecoration(
-                  hintText: "Titulo de convocatoria",
-                  suffixIcon: Icon(Icons.work),
-                  prefixIcon: Icon(Icons.account_balance_sharp),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14))),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              TextField(
+                style: TextStyle(fontSize: 18),
+                maxLines: 1,
+                controller: _tituConvocato,
+                decoration: InputDecoration(
+                    hintText: "Titulo de convocatoria",
+                    suffixIcon: Icon(Icons.work),
+                    prefixIcon: Icon(Icons.account_balance_sharp),
+                    enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14)),
+                    focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14))),
+              ),
+              CardEvaluadores(model: widget.modelConvo),
+
+              CardParticipantes(model: widget.modelConvo),
+              
+            const Padding(
+                padding: EdgeInsets.all(3),
+                child: Text("Items de Evaluacion",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+              ),
+              
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(children: [CardItems(),CardItems(),CardItems(),CardItems(),CardItems()]),
+              ),
+                 Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(""),
+                const Icon(Icons.arrow_right_alt_outlined),
+                Container(
+                  width: 30,
+          
+                  child: ElevatedButton(
+                    onPressed: () {
+                        
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 15,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(), padding: EdgeInsets.all(5)),
+                  ),
+                ),
+              ],
             ),
-            CardEvaluadores(model: widget.modelConvo),
-            CardParticipantes(model: widget.modelConvo),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(children: [Text("data")]),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  guardarConvocatoria();
-                },
-                child: Text("Convocatoria Guardar")),
-            ElevatedButton(
-                onPressed: () {
-                  obtenemosConvocatoria();
-                },
-                child: Text("obtener")),
-            ElevatedButton(
-                onPressed: () {
-                  obtenemosConvocatoriaEvaluador();
-                },
-                child: Text("obtenemosConvocator1")),
-            ElevatedButton(
-                onPressed: () {
-                  TodoobtenemosConvocatoriaEvaluador();
-                },
-                child: Text("TodoosConvocatoriaEvaluador"))
-          ],
+              
+              ElevatedButton(
+                  onPressed: () {
+                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>MenuPage()));
+                  },
+                  child: Text("Terminar")),
+              ElevatedButton(
+                  onPressed: () {
+                    obtenemosConvocatoria();
+                  },
+                  child: Text("obtener")),
+
+            ],
+          ),
         ),
       ),
     );

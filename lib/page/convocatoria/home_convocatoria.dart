@@ -4,6 +4,7 @@ import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/evaluador.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/form_Convocatoria.dart';
+import 'package:flutter_proyecto_1/page/menu_page.dart';
 import 'package:flutter_proyecto_1/ui/generales/textfield_normal_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -93,13 +94,24 @@ class _HomeConvocatoriaState extends State<HomeConvocatoria> {
         appBar: AppBar(
           title: const Text("Lista de Convocatorias"),
           centerTitle: true,
-        ),
+                leading: IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => MenuPage()));
+              },
+              icon: Icon(Icons.arrow_back))),
+        
+        
+        
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showFormConvocatoria();
           },
           child: const Icon(Icons.add),
         ),
+        
         body: FutureBuilder(
           future: DBAdmin.db.getConvocatorias(),
           builder: (BuildContext context, AsyncSnapshot snap) {
