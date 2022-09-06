@@ -4,6 +4,7 @@ import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/form_items.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/home_convocatoria.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/widget_Evaluadores.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/widget_Participantes.dart';
@@ -105,49 +106,60 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                     suffixIcon: Icon(Icons.work),
                     prefixIcon: Icon(Icons.account_balance_sharp),
                     enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14)),
+                        borderRadius: BorderRadius.circular(14)),
                     focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14))),
+                        borderRadius: BorderRadius.circular(14))),
               ),
               CardEvaluadores(model: widget.modelConvo),
-
               CardParticipantes(model: widget.modelConvo),
-              
-            const Padding(
+              const Padding(
                 padding: EdgeInsets.all(3),
-                child: Text("Items de Evaluacion",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                child: Text(
+                  "Items de Evaluacion",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
               ),
-              
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(children: [CardItems(),CardItems(),CardItems(),CardItems(),CardItems()]),
+                child: Row(children: [
+                  CardItems(),
+                  CardItems(),
+                  CardItems(),
+                  CardItems(),
+                  CardItems()
+                ]),
               ),
-                 Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(""),
-                const Icon(Icons.arrow_right_alt_outlined),
-                Container(
-                  width: 30,
-          
-                  child: ElevatedButton(
-                    onPressed: () {
-                        
-                    },
-                    child: Icon(
-                      Icons.add,
-                      size: 15,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(""),
+                  const Icon(Icons.arrow_right_alt_outlined),
+                  Container(
+                    width: 30,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    formItemes()));
+                      },
+                      child: Icon(
+                        Icons.add,
+                        size: 15,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(), padding: EdgeInsets.all(5)),
                     ),
-                    style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(), padding: EdgeInsets.all(5)),
                   ),
-                ),
-              ],
-            ),
-              
+                ],
+              ),
               ElevatedButton(
                   onPressed: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>MenuPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => MenuPage()));
                   },
                   child: Text("Terminar")),
               ElevatedButton(
@@ -155,7 +167,6 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                     obtenemosConvocatoria();
                   },
                   child: Text("obtener")),
-
             ],
           ),
         ),

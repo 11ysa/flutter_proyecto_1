@@ -4,6 +4,7 @@ import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TextFieldNormalWidget extends StatelessWidget {
+  int? maxlineas;
   String hintText;
   String? icon;
   bool isDNI;
@@ -15,7 +16,8 @@ class TextFieldNormalWidget extends StatelessWidget {
       required this.icon,
       required this.isDNI,
       required this.controller,
-      required this.campoNumerico});
+      required this.campoNumerico,
+      this.maxlineas});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class TextFieldNormalWidget extends StatelessWidget {
         ],
       ),
       child: TextFormField(
+        maxLines: maxlineas != null ? maxlineas : 1,
         controller: controller,
         keyboardType: isDNI || campoNumerico! ? TextInputType.number : null,
         maxLength: isDNI ? 8 : null,
