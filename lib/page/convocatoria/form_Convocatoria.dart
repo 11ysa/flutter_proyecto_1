@@ -44,12 +44,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
   }
 
   obtenemosConvocatoria() {
-    print("convocatora");
-    print(DBAdmin.db.getConvocatorias());
 
-    print("con evaluador");
-    //eva con
-    print(DBAdmin.db.getConvocatoriasEvaluadores(3, 2));
   }
 
   listarEvaluadores() {

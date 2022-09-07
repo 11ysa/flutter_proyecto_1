@@ -13,14 +13,23 @@ class formItemes extends StatefulWidget {
 }
 
 class _formItemesState extends State<formItemes> {
+  
   /* Variables */
   TextEditingController _titulo = TextEditingController();
   TextEditingController _des5 = TextEditingController();
   TextEditingController _des4 = TextEditingController();
   TextEditingController _des3 = TextEditingController();
   TextEditingController _des2 = TextEditingController();
+  TextEditingController _porcentaje= TextEditingController();
+  String valorPorce="10";
+ 
+
 
   /* mostrar porcentaje */
+  String calcualrPorcentaje (int numero){
+
+     return "null";
+  }
 
   Widget ListPorcentaje() {
     return Container(
@@ -47,6 +56,12 @@ class _formItemesState extends State<formItemes> {
             content: ListPorcentaje(),
           );
         });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
   }
 
   @override
@@ -231,15 +246,43 @@ class _formItemesState extends State<formItemes> {
                         ],
                       ),
                       const SizedBox(
-                        height: 10,
+                       height: 10,
                       ),
-                      Container(
-                        child: ElevatedButton(
-                            onPressed: () {
-                              showListPorcentaje();
-                            },
-                            child: Text("Porcentaje")),
-                      )
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Visibility(
+                            visible: false,
+                            child: Container(
+                                width: 130,
+                                child: TextFieldNormalWidget(
+                                  hintText: "% de evaluacion",
+                                  icon: "link",
+                                  isDNI: false,
+                                  controller: _porcentaje,
+                                  campoNumerico: false,
+                                )),
+                          ),
+                         Container(
+                            width: 150,
+                            height: 100,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("$valorPorce %",style: TextStyle(fontSize:30,fontWeight: FontWeight.w500)),
+                                  SizedBox(width: 10),
+                                  ElevatedButton.icon(onPressed: (){
+                                    showListPorcentaje();
+                                  }, icon: Icon(Icons.search), label: Text(""))
+                                ],
+                              )),
+                         
+                        ],
+                      ),
+                      const SizedBox(
+                       height: 10,
+                      ),
+                     
                     ],
                   ),
                 ),

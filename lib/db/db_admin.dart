@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/evaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
+import 'package:flutter_proyecto_1/models/items.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -48,12 +49,54 @@ class DBAdmin {
 
   /* items */
   //insertamos
-
+ Future<int> insertamosItems(ItemsModel ItemsModel)async
+ {
+    Database? db=await checkDatabase();
+    int resul=await db!.insert("iTEMS", {"idconvocatoria":ItemsModel.idconvocatoria,
+    "titulo":ItemsModel.titulo,
+    "porcentaje":ItemsModel.porcentaje,
+    "des5":ItemsModel.des5,
+    "des4":ItemsModel.des4,
+    "des3":ItemsModel.des3,
+    "des2":ItemsModel.des2});
+    return resul;
+     
+ }
   //modificamos
+ Future<int> modificamosItems(ItemsModel ItemsModel)async
+ {
+    Database? db=await checkDatabase();
+    int resul=await db!.update("ITEMS", {"idconvocatoria":ItemsModel.idconvocatoria,
+    "titulo":ItemsModel.titulo,
+    "porcentaje":ItemsModel.porcentaje,
+    "des5":ItemsModel.des5,
+    "des4":ItemsModel.des4,
+    "des3":ItemsModel.des3,
+    "des2":ItemsModel.des2},where: "id=?", whereArgs:[ItemsModel.id]);
+    return resul;
+     
+ }
   //elimamos
-  //listamos
+    Future<int> deleteItems(int idItems) async
+    {
+      Database? db=await checkDatabase();
+      int resul=await db!.delete("ITEMS", where: "id=$idItems");
+      return resul;
+    }
+
+ //listamos
+  Future<List<ItemsModel>> getItems() async {
+    Database? db= await checkDatabase();
+    List<Map<String, dynamic>> listaDB= await db!.query("ITEMS");
+    List<ItemsModel>  listModel=listaDB.map((e) => ItemsModel.deMapModel(e)).toList();
+    return listModel;
+   }
+
+  
+  
 
   /* ************************************************************* */
+ 
 
   /* convoctoria Con participante */
   //insertamos
@@ -81,7 +124,6 @@ class DBAdmin {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> listaBD = await db!.rawQuery(
         "SELECT * FROM CONPARTICIPANTE WHERE idevaluador=$idEvalua and idparticipante=$idParticipante");
-    print(listaBD);
     List<ConParticipanteModel> lisModel =
         listaBD.map((e) => ConParticipanteModel.deMapAModel(e)).toList();
     return lisModel;
@@ -115,9 +157,8 @@ class DBAdmin {
   Future<List<ConParticipanteModel>> getConvocatoriaParticiapnte() async {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> listaBD = await db!.query("CONPARTICIPANTE");
-    print(listaBD);
     List<ConParticipanteModel> lisModel =
-        listaBD.map((e) => ConParticipanteModel.deMapAModel(e)).toList();
+    listaBD.map((e) => ConParticipanteModel.deMapAModel(e)).toList();
     return lisModel;
   }
 
