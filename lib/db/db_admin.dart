@@ -49,54 +49,57 @@ class DBAdmin {
 
   /* items */
   //insertamos
- Future<int> insertamosItems(ItemsModel ItemsModel)async
- {
-    Database? db=await checkDatabase();
-    int resul=await db!.insert("iTEMS", {"idconvocatoria":ItemsModel.idconvocatoria,
-    "titulo":ItemsModel.titulo,
-    "porcentaje":ItemsModel.porcentaje,
-    "des5":ItemsModel.des5,
-    "des4":ItemsModel.des4,
-    "des3":ItemsModel.des3,
-    "des2":ItemsModel.des2});
+  Future<int> insertamosItems(ItemsModel ItemsModel) async {
+    Database? db = await checkDatabase();
+    int resul = await db!.insert("iTEMS", {
+      "idconvocatoria": ItemsModel.idconvocatoria,
+      "titulo": ItemsModel.titulo,
+      "porcentaje": ItemsModel.porcentaje,
+      "des5": ItemsModel.des5,
+      "des4": ItemsModel.des4,
+      "des3": ItemsModel.des3,
+      "des2": ItemsModel.des2
+    });
     return resul;
-     
- }
+  }
+
   //modificamos
- Future<int> modificamosItems(ItemsModel ItemsModel)async
- {
-    Database? db=await checkDatabase();
-    int resul=await db!.update("ITEMS", {"idconvocatoria":ItemsModel.idconvocatoria,
-    "titulo":ItemsModel.titulo,
-    "porcentaje":ItemsModel.porcentaje,
-    "des5":ItemsModel.des5,
-    "des4":ItemsModel.des4,
-    "des3":ItemsModel.des3,
-    "des2":ItemsModel.des2},where: "id=?", whereArgs:[ItemsModel.id]);
+  Future<int> modificamosItems(ItemsModel ItemsModel) async {
+    Database? db = await checkDatabase();
+    int resul = await db!.update(
+        "ITEMS",
+        {
+          "idconvocatoria": ItemsModel.idconvocatoria,
+          "titulo": ItemsModel.titulo,
+          "porcentaje": ItemsModel.porcentaje,
+          "des5": ItemsModel.des5,
+          "des4": ItemsModel.des4,
+          "des3": ItemsModel.des3,
+          "des2": ItemsModel.des2
+        },
+        where: "id=?",
+        whereArgs: [ItemsModel.id]);
     return resul;
-     
- }
+  }
+
   //elimamos
-    Future<int> deleteItems(int idItems) async
-    {
-      Database? db=await checkDatabase();
-      int resul=await db!.delete("ITEMS", where: "id=$idItems");
-      return resul;
-    }
+  Future<int> deleteItems(int idItems) async {
+    Database? db = await checkDatabase();
+    int resul = await db!.delete("ITEMS", where: "id=$idItems");
+    return resul;
+  }
 
- //listamos
+  //listamos
   Future<List<ItemsModel>> getItems() async {
-    Database? db= await checkDatabase();
-    List<Map<String, dynamic>> listaDB= await db!.query("ITEMS");
-    List<ItemsModel>  listModel=listaDB.map((e) => ItemsModel.deMapModel(e)).toList();
+    Database? db = await checkDatabase();
+    List<Map<String, dynamic>> listaDB = await db!.query("ITEMS");
+    List<ItemsModel> listModel =
+        listaDB.map((e) => ItemsModel.deMapModel(e)).toList();
+    print(listaDB);
     return listModel;
-   }
-
-  
-  
+  }
 
   /* ************************************************************* */
- 
 
   /* convoctoria Con participante */
   //insertamos
@@ -158,7 +161,7 @@ class DBAdmin {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> listaBD = await db!.query("CONPARTICIPANTE");
     List<ConParticipanteModel> lisModel =
-    listaBD.map((e) => ConParticipanteModel.deMapAModel(e)).toList();
+        listaBD.map((e) => ConParticipanteModel.deMapAModel(e)).toList();
     return lisModel;
   }
 

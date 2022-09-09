@@ -1,5 +1,5 @@
 class ItemsModel {
-  int id;
+  int? id;
   int idconvocatoria;
   String titulo;
   int porcentaje;
@@ -9,7 +9,7 @@ class ItemsModel {
   String des2;
 
   ItemsModel(
-      {required this.id,
+      {this.id,
       required this.idconvocatoria,
       required this.titulo,
       required this.porcentaje,

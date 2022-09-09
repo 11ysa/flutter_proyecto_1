@@ -43,9 +43,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
   */
   }
 
-  obtenemosConvocatoria() {
-
-  }
+  obtenemosConvocatoria() {}
 
   listarEvaluadores() {
     showDialog(
@@ -114,16 +112,15 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(children: [
-                  CardItems(),
-                  CardItems(),
-                  CardItems(),
-                  CardItems(),
-                  CardItems()
-                ]),
-              ),
+              SizedBox(
+                  width: double.infinity,
+                  height: 150,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 40,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return CardItems();
+                      })),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -159,7 +156,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   child: Text("Terminar")),
               ElevatedButton(
                   onPressed: () {
-                    obtenemosConvocatoria();
+                    DBAdmin.db.getItems();
                   },
                   child: Text("obtener")),
             ],
