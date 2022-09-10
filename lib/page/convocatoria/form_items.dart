@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
+import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/items.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/form_Convocatoria.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 import 'package:flutter_proyecto_1/ui/generales/textfield_normal_widget.dart';
 
 import 'list_porcentaje.dart';
 
 class formItemes extends StatefulWidget {
-  const formItemes({Key? key}) : super(key: key);
+  ConvocatoriaModel? modelConvo;
+
+  formItemes({this.modelConvo});
 
   @override
   State<formItemes> createState() => _formItemesState();
@@ -24,6 +28,7 @@ class _formItemesState extends State<formItemes> {
   final TextEditingController _des2 = TextEditingController();
   final TextEditingController _porcentaje = TextEditingController();
   String valorPorce = "10";
+  int? idconvocatoria;
 
   /* lista de porcentajes */
   List<String> listaPorc() {
@@ -42,7 +47,7 @@ class _formItemesState extends State<formItemes> {
   GuardarItems() {
     if (_formkey.currentState!.validate()) {
       ItemsModel model = ItemsModel(
-          idconvocatoria: 1,
+          idconvocatoria: idconvocatoria!,
           titulo: _titulo.text,
           porcentaje: int.parse(_porcentaje.text),
           des5: _des5.text,
@@ -51,7 +56,6 @@ class _formItemesState extends State<formItemes> {
           des2: _des2.text);
       DBAdmin.db.insertamosItems(model).then((value) {
         if (value > 0) {
-          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.indigo,
               shape: RoundedRectangleBorder(
@@ -67,6 +71,7 @@ class _formItemesState extends State<formItemes> {
                   Text("Items Registrado")
                 ],
               )));
+          _titulo.clear();
         }
       });
     }
@@ -114,6 +119,7 @@ class _formItemesState extends State<formItemes> {
     // TODO: implement initState
     super.initState();
     _porcentaje.text = valorPorce.toString();
+    idconvocatoria = widget.modelConvo!.id;
   }
 
   @override
@@ -352,6 +358,36 @@ class _formItemesState extends State<formItemes> {
                       label: const Text("Guardar"),
                       style: ElevatedButton.styleFrom(
                           primary: dcolorButon2,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FormConvocatoria(
+                                      modelConvo: widget.modelConvo,
+                                    )));
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FormConvocatoria(
+                                      modelConvo: widget.modelConvo,
+                                    )));
+                      },
+                      icon: const Icon(Icons.backspace),
+                      label: const Text("Volver"),
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.pinkAccent,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14))),
                     ),

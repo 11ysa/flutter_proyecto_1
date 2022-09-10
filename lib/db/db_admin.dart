@@ -90,9 +90,10 @@ class DBAdmin {
   }
 
   //listamos
-  Future<List<ItemsModel>> getItems() async {
+  Future<List<ItemsModel>> getItems(int idConvocatoria) async {
     Database? db = await checkDatabase();
-    List<Map<String, dynamic>> listaDB = await db!.query("ITEMS");
+    List<Map<String, dynamic>> listaDB = await db!
+        .rawQuery("SELECT * FROM ITEMS WHERE idconvocatoria=$idConvocatoria");
     List<ItemsModel> listModel =
         listaDB.map((e) => ItemsModel.deMapModel(e)).toList();
     print(listaDB);

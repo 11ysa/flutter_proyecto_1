@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/models/items.dart';
 
 class CardItems extends StatefulWidget {
-  ItemsModel? model;
+  String titulo;
+  int porcentaje;
 
-  CardItems({this.model});
+  CardItems({required this.titulo, required this.porcentaje});
 
   @override
   State<CardItems> createState() => _CardItemsState();
@@ -178,19 +179,21 @@ class _CardItemsState extends State<CardItems> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(widget.model!.titulo,
+                  Text(widget.titulo.toString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(widget.model!.porcentaje.toString(),
-                          style: TextStyle(fontSize: 20)),
-                      Text("%", style: TextStyle(fontSize: 20)),
+                      Text(widget.porcentaje.toString(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 20)),
+                      const Text(" %", style: TextStyle(fontSize: 20)),
                     ],
                   ),
-                  estrellas(10)
+                  estrellas(widget.porcentaje)
                 ],
               ),
             ),

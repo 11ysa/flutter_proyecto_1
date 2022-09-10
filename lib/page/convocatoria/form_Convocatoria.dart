@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
+import 'package:flutter_proyecto_1/models/items.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/form_items.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/home_convocatoria.dart';
@@ -61,6 +62,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
     DBAdmin.db.getConvocatoriaEvaluador();
   }
 
+  int? idconvocatoria;
   //inicio
   @override
   void initState() {
@@ -68,6 +70,9 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
     super.initState();
     setState(() {});
     _tituConvocato.text = widget.modelConvo!.Titulo;
+    idconvocatoria = widget.modelConvo!.id;
+    print("object");
+    print(widget.modelConvo!.id);
   }
 
   @override
@@ -112,15 +117,30 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
               ),
+              //OBTENEMOS LA LSITA
               SizedBox(
                   width: double.infinity,
                   height: 150,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 40,
-                      itemBuilder: (BuildContext ctx, index) {
-                        return CardItems();
-                      })),
+                  child: FutureBuilder(
+                    future: DBAdmin.db.getItems(idconvocatoria!),
+                    builder: (BuildContext context, AsyncSnapshot snap) {
+                      if (snap.hasData) {
+                        List<ItemsModel> listModel = snap.data;
+                        return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: listModel.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              return CardItems(
+                                titulo: listModel[index].titulo,
+                                porcentaje: listModel[index].porcentaje,
+                              );
+                            });
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -133,8 +153,9 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    formItemes()));
+                                builder: (BuildContext context) => formItemes(
+                                      modelConvo: widget.modelConvo,
+                                    )));
                       },
                       child: Icon(
                         Icons.add,
@@ -156,7 +177,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   child: Text("Terminar")),
               ElevatedButton(
                   onPressed: () {
-                    DBAdmin.db.getItems();
+                    // DBAdmin.db.getItems();
                   },
                   child: Text("obtener")),
             ],
