@@ -174,12 +174,17 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                         MaterialPageRoute(
                             builder: (BuildContext context) => MenuPage()));
                   },
-                  child: Text("Terminar")),
+                  child: Text("TERMINAR")),
               ElevatedButton(
                   onPressed: () {
-                    // DBAdmin.db.getItems();
+                    DBAdmin.db.getItemsTodos();
                   },
-                  child: Text("obtener")),
+                  child: Text("obtener todos")),
+              ElevatedButton(
+                  onPressed: () {
+                    // DBAdmin.db.getPorcentajeTotal(1);
+                  },
+                  child: Text("obte VALOR")),
             ],
           ),
         ),

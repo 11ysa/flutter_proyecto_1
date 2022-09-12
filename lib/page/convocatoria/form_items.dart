@@ -29,18 +29,25 @@ class _formItemesState extends State<formItemes> {
   final TextEditingController _porcentaje = TextEditingController();
   String valorPorce = "10";
   int? idconvocatoria;
+  int? global;
 
-  /* lista de porcentajes */
-  List<String> listaPorc() {
-    List<String> lista = [];
+  /* lista de porcentajes*/
 
-    int valor = 20; // valor inicializado
-    double variable = (100 - valor) / 10;
-    for (var i = 1; i <= variable; i++) {
-      int contador = i * 10;
-      lista.add(contador.toString());
-    }
-    return lista;
+  List<String> listaPorcentaje() {
+    List<String> listaPorce =
+        DBAdmin.db.getItemsPorcentajeTotal(4).then((value) {
+      List<String> lista = [];
+      if (value > 0) {
+        double variable = (100 - 20) / 10;
+        for (var i = 1; i <= variable; i++) {
+          int contador = i * 10;
+          lista.add(contador.toString());
+        }
+        return lista;
+      }
+    });
+    print(listaPorce);
+    return listaPorce;
   }
 
   /* mostrar porcentaje */
@@ -71,31 +78,34 @@ class _formItemesState extends State<formItemes> {
                   Text("Items Registrado")
                 ],
               )));
+
           _titulo.clear();
+          _des2.clear();
+          _des3.clear();
+          _des2.clear();
         }
       });
     }
   }
 
   Widget ListPorcentaje() {
-    List<String> lista = listaPorc();
     return Container(
       height: 300.0,
       width: 300.0,
       child: ListView.builder(
         shrinkWrap: true,
-        itemCount: lista.length,
+        itemCount: listaPorcentaje.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              valorPorce = lista[index].toString();
+              valorPorce = listaPorcentaje[index].toString();
               _porcentaje.text = valorPorce;
               Navigator.pop(context);
               setState(() {});
             },
             child: ListTile(
                 title: Row(
-              children: [Text(lista[index]), const Text("%")],
+              children: [Text(listaPorcentaje[index]), const Text("%")],
             )),
           );
         },
@@ -126,7 +136,7 @@ class _formItemesState extends State<formItemes> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Registrar Nuevo Items"),
+          title: const Text("Registrar Nuevo Items"),
           backgroundColor: dcolorAppBar,
         ),
         body: Form(
@@ -336,6 +346,7 @@ class _formItemesState extends State<formItemes> {
                                     SizedBox(width: 10),
                                     ElevatedButton.icon(
                                         onPressed: () {
+                                          listaPorcentaje();
                                           showListPorcentaje();
                                         },
                                         icon: Icon(Icons.search),

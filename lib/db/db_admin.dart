@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/evaluador.dart';
@@ -89,15 +90,37 @@ class DBAdmin {
     return resul;
   }
 
-  //listamos
+  //listamos items y convocatoria
+  Future<List<ItemsModel>> getItemsTodos() async {
+    Database? db = await checkDatabase();
+    List<Map<String, dynamic>> listaDB = await db!.query("ITEMS");
+    List<ItemsModel> listModel =
+        listaDB.map((e) => ItemsModel.deMapModel(e)).toList();
+    print(listaDB);
+    return listModel;
+  }
+
   Future<List<ItemsModel>> getItems(int idConvocatoria) async {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> listaDB = await db!
         .rawQuery("SELECT * FROM ITEMS WHERE idconvocatoria=$idConvocatoria");
     List<ItemsModel> listModel =
         listaDB.map((e) => ItemsModel.deMapModel(e)).toList();
-    print(listaDB);
     return listModel;
+  }
+
+  // listamos porcentaje total
+  getItemsPorcentajeTotal(int idConvocatoria) async {
+    Database? db = await checkDatabase();
+    int valor = 0;
+    List<Map<String, dynamic>> listaDB = await db!
+        .rawQuery("SELECT * FROM ITEMS WHERE idconvocatoria=$idConvocatoria");
+
+    listaDB.forEach((element) {
+      valor = valor + int.parse(element["porcentaje"].toString());
+    });
+
+    return valor;
   }
 
   /* ************************************************************* */
