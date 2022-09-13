@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/items.dart';
+import 'package:flutter_proyecto_1/page/convocatoria/form_items.dart';
 
 class CardItems extends StatefulWidget {
-  String titulo;
-  int porcentaje;
-
-  CardItems({required this.titulo, required this.porcentaje});
+  ConvocatoriaModel? modelConvo;
+  ItemsModel? modelItems;
+  int? itemsPorcentajeTotal;
+  CardItems({this.modelConvo, this.modelItems, this.itemsPorcentajeTotal});
 
   @override
   State<CardItems> createState() => _CardItemsState();
@@ -167,7 +169,13 @@ class _CardItemsState extends State<CardItems> {
         children: [
           GestureDetector(
             onTap: () {
-              print("hola ");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => FormItems(
+                            modelConvo: widget.modelConvo,
+                            modelItems: widget.modelItems,
+                          )));
             },
             child: Container(
               height: 130,
@@ -179,7 +187,7 @@ class _CardItemsState extends State<CardItems> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(widget.titulo.toString(),
+                  Text(widget.modelItems!.titulo,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16),
                       maxLines: 2,
@@ -187,13 +195,13 @@ class _CardItemsState extends State<CardItems> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(widget.porcentaje.toString(),
+                      Text(widget.modelItems!.porcentaje.toString(),
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 20)),
                       const Text(" %", style: TextStyle(fontSize: 20)),
                     ],
                   ),
-                  estrellas(widget.porcentaje)
+                  estrellas(widget.modelItems!.porcentaje)
                 ],
               ),
             ),

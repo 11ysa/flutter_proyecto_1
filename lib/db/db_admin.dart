@@ -119,7 +119,6 @@ class DBAdmin {
     listaDB.forEach((element) {
       valor = valor + int.parse(element["porcentaje"].toString());
     });
-
     return valor;
   }
 

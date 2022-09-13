@@ -26,6 +26,7 @@ class FormConvocatoria extends StatefulWidget {
 class _FormConvocatoriaState extends State<FormConvocatoria> {
   //variables Globales
   final TextEditingController _tituConvocato = TextEditingController();
+  int ItemsPorceTatal = 0;
 
   //procedimientos
   guardarConvocatoria() {
@@ -60,6 +61,11 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
 
   TodoobtenemosConvocatoriaEvaluador() {
     DBAdmin.db.getConvocatoriaEvaluador();
+  }
+
+  optenemosTotal() {
+    int? numero = widget.modelConvo!.id;
+    DBAdmin.db.getItemsPorcentajeTotal(numero!);
   }
 
   int? idconvocatoria;
@@ -117,7 +123,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
               ),
-              //OBTENEMOS LA LSITA
+              //OBTENEMOS LA LISTA
               SizedBox(
                   width: double.infinity,
                   height: 150,
@@ -126,13 +132,13 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                     builder: (BuildContext context, AsyncSnapshot snap) {
                       if (snap.hasData) {
                         List<ItemsModel> listModel = snap.data;
+
                         return ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: listModel.length,
                             itemBuilder: (BuildContext ctx, index) {
                               return CardItems(
-                                titulo: listModel[index].titulo,
-                                porcentaje: listModel[index].porcentaje,
+                                modelItems: listModel[index],
                               );
                             });
                       }
@@ -150,12 +156,43 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                     width: 30,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => formItemes(
-                                      modelConvo: widget.modelConvo,
-                                    )));
+                        DBAdmin.db
+                            .getItemsPorcentajeTotal(idconvocatoria!)
+                            .then((value) {
+                          print("value $value");
+                          if (value < 100) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        FormItems(
+                                          modelConvo: widget.modelConvo,
+                                          TotalItems: value,
+                                        )));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.amberAccent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14)),
+                                duration: const Duration(milliseconds: 1600),
+                                behavior: SnackBarBehavior.floating,
+                                content: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.warning,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      "Items Supera el 100 % ",
+                                      style: TextStyle(color: Colors.black),
+                                    )
+                                  ],
+                                )));
+                          }
+                        });
                       },
                       child: Icon(
                         Icons.add,
@@ -182,7 +219,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                   child: Text("obtener todos")),
               ElevatedButton(
                   onPressed: () {
-                    // DBAdmin.db.getPorcentajeTotal(1);
+                    print(optenemosTotal());
                   },
                   child: Text("obte VALOR")),
             ],

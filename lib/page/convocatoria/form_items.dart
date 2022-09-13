@@ -9,16 +9,18 @@ import 'package:flutter_proyecto_1/ui/generales/textfield_normal_widget.dart';
 
 import 'list_porcentaje.dart';
 
-class formItemes extends StatefulWidget {
+class FormItems extends StatefulWidget {
   ConvocatoriaModel? modelConvo;
+  ItemsModel? modelItems;
+  int? TotalItems;
 
-  formItemes({this.modelConvo});
+  FormItems({this.modelConvo, this.modelItems, this.TotalItems});
 
   @override
-  State<formItemes> createState() => _formItemesState();
+  State<FormItems> createState() => _FormItemsState();
 }
 
-class _formItemesState extends State<formItemes> {
+class _FormItemsState extends State<FormItems> {
   /* Variables */
   final _formkey = GlobalKey<FormState>();
   final TextEditingController _titulo = TextEditingController();
@@ -31,10 +33,9 @@ class _formItemesState extends State<formItemes> {
   int? idconvocatoria;
 
   /* lista de porcentajes */
-  List<String> listaPorc() {
+  List<String> listaPorc(int TotalItems) {
     List<String> lista = [];
-
-    int valor = 20; // valor inicializado
+    int valor = TotalItems; // valor inicializado
     double variable = (100 - valor) / 10;
     for (var i = 1; i <= variable; i++) {
       int contador = i * 10;
@@ -81,8 +82,8 @@ class _formItemesState extends State<formItemes> {
     }
   }
 
-  Widget ListPorcentaje() {
-    List<String> lista = listaPorc();
+  Widget ListPorcentaje(int TotalItems) {
+    List<String> lista = listaPorc(TotalItems);
     return Container(
       height: 300.0,
       width: 300.0,
@@ -107,13 +108,13 @@ class _formItemesState extends State<formItemes> {
     );
   }
 
-  showListPorcentaje() {
+  showListPorcentaje(int TotalItems) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Porcentaje de evaluacion'),
-            content: ListPorcentaje(),
+            content: ListPorcentaje(TotalItems),
           );
         });
   }
@@ -123,7 +124,21 @@ class _formItemesState extends State<formItemes> {
     // TODO: implement initState
     super.initState();
     _porcentaje.text = valorPorce.toString();
-    idconvocatoria = widget.modelConvo!.id;
+    //print(widget.TotalItems);
+
+    if (widget.modelConvo != null) {
+      //modificar
+      idconvocatoria = widget.modelConvo!.id;
+    }
+    if (widget.modelItems != null) {
+      _titulo.text = widget.modelItems!.titulo;
+      _des5.text = widget.modelItems!.des5;
+      _des4.text = widget.modelItems!.des4;
+      _des3.text = widget.modelItems!.des3;
+      _des2.text = widget.modelItems!.des2;
+      _porcentaje.text = widget.modelItems!.porcentaje.toString();
+      valorPorce = _porcentaje.text;
+    }
   }
 
   @override
@@ -340,7 +355,17 @@ class _formItemesState extends State<formItemes> {
                                     SizedBox(width: 10),
                                     ElevatedButton.icon(
                                         onPressed: () {
-                                          showListPorcentaje();
+                                          if (ItemsModel != null) {
+                                            DBAdmin.db
+                                                .getItemsPorcentajeTotal(widget
+                                                    .modelItems!.idconvocatoria)
+                                                .then((value) {
+                                              showListPorcentaje(value);
+                                            });
+                                          } else {
+                                            showListPorcentaje(
+                                                widget.TotalItems!);
+                                          }
                                         },
                                         icon: Icon(Icons.search),
                                         label: Text(""))
@@ -357,6 +382,12 @@ class _formItemesState extends State<formItemes> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         GuardarItems();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FormConvocatoria(
+                                      modelConvo: widget.modelConvo,
+                                    )));
                       },
                       icon: const Icon(Icons.save),
                       label: const Text("Guardar"),
@@ -368,33 +399,6 @@ class _formItemesState extends State<formItemes> {
                   ),
                   const SizedBox(
                     height: 10,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FormConvocatoria(
-                                      modelConvo: widget.modelConvo,
-                                    )));
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FormConvocatoria(
-                                      modelConvo: widget.modelConvo,
-                                    )));
-                      },
-                      icon: const Icon(Icons.backspace),
-                      label: const Text("Volver"),
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.pinkAccent,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14))),
-                    ),
                   ),
                 ],
               ),
