@@ -10,6 +10,7 @@ class TextFieldNormalWidget extends StatelessWidget {
   bool isDNI;
   TextEditingController controller;
   bool? campoNumerico;
+  bool? activo;
 
   TextFieldNormalWidget(
       {required this.hintText,

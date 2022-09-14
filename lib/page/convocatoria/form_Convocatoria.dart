@@ -75,10 +75,10 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
     // TODO: implement initState
     super.initState();
     setState(() {});
-    _tituConvocato.text = widget.modelConvo!.Titulo;
     idconvocatoria = widget.modelConvo!.id;
-    print("object");
-    print(widget.modelConvo!.id);
+    DBAdmin.db.getConvocatoria(idconvocatoria!).then((value) {
+      _tituConvocato.text = value[0].Titulo.toString();
+    });
   }
 
   @override
@@ -88,6 +88,16 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
           title: Text("Registrar Convocatoria"),
           centerTitle: true,
           backgroundColor: dcolorAppBar,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MenuPage()));
+                },
+                icon: Icon(Icons.home))
+          ],
           leading: IconButton(
               onPressed: () {
                 Navigator.push(
@@ -132,13 +142,15 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                     builder: (BuildContext context, AsyncSnapshot snap) {
                       if (snap.hasData) {
                         List<ItemsModel> listModel = snap.data;
-
+                        List<ConvocatoriaModel>? listmodelcon;
                         return ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: listModel.length,
                             itemBuilder: (BuildContext ctx, index) {
                               return CardItems(
                                 modelItems: listModel[index],
+                                modelConvo: ConvocatoriaModel(
+                                    id: listModel[index].idconvocatoria),
                               );
                             });
                       }

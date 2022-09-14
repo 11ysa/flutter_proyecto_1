@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/items.dart';
 import 'package:flutter_proyecto_1/page/convocatoria/form_items.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class CardItems extends StatefulWidget {
   ConvocatoriaModel? modelConvo;
@@ -160,6 +161,12 @@ class _CardItemsState extends State<CardItems> {
     );
   }
 
+  double numeroEstrellas(int valor) {
+    double valor_1 = valor / 10;
+    double valor_2 = valor_1 / 2;
+    return valor_2;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -175,13 +182,14 @@ class _CardItemsState extends State<CardItems> {
                       builder: (BuildContext context) => FormItems(
                             modelConvo: widget.modelConvo,
                             modelItems: widget.modelItems,
+                            modelItemsConvo: widget.modelConvo!,
                           )));
             },
             child: Container(
-              height: 130,
-              width: 160,
+              height: 120,
+              width: 150,
               decoration: BoxDecoration(
-                color: Colors.lightGreenAccent.withOpacity(0.5),
+                color: Colors.lightGreenAccent.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Column(
@@ -197,11 +205,40 @@ class _CardItemsState extends State<CardItems> {
                     children: [
                       Text(widget.modelItems!.porcentaje.toString(),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 20)),
-                      const Text(" %", style: TextStyle(fontSize: 20)),
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.amber,
+                              fontWeight: FontWeight.w800)),
+                      const Text(" %",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.amber,
+                              fontWeight: FontWeight.w800)),
                     ],
                   ),
-                  estrellas(widget.modelItems!.porcentaje)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: RatingBar.builder(
+                            initialRating:
+                                numeroEstrellas(widget.modelItems!.porcentaje),
+                            minRating: 0.5,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 20,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {},
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

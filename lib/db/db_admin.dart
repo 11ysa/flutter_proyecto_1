@@ -65,7 +65,7 @@ class DBAdmin {
   }
 
   //modificamos
-  Future<int> modificamosItems(ItemsModel ItemsModel) async {
+  Future<int> updateItems(ItemsModel ItemsModel) async {
     Database? db = await checkDatabase();
     int resul = await db!.update(
         "ITEMS",
@@ -267,6 +267,7 @@ class DBAdmin {
   }
 
   // obtener una convocatoria
+
   Future<List<ConvocatoriaModel>> getConvocatoria(int idConvocatoria) async {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> listaBD = await db!

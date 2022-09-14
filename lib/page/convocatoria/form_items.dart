@@ -12,9 +12,14 @@ import 'list_porcentaje.dart';
 class FormItems extends StatefulWidget {
   ConvocatoriaModel? modelConvo;
   ItemsModel? modelItems;
+  ConvocatoriaModel? modelItemsConvo;
   int? TotalItems;
 
-  FormItems({this.modelConvo, this.modelItems, this.TotalItems});
+  FormItems(
+      {this.modelConvo,
+      this.modelItems,
+      this.modelItemsConvo,
+      this.TotalItems});
 
   @override
   State<FormItems> createState() => _FormItemsState();
@@ -55,30 +60,58 @@ class _FormItemsState extends State<FormItems> {
           des4: _des4.text,
           des3: _des3.text,
           des2: _des2.text);
-      DBAdmin.db.insertamosItems(model).then((value) {
-        if (value > 0) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.indigo,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14)),
-              duration: const Duration(milliseconds: 1400),
-              behavior: SnackBarBehavior.floating,
-              content: Row(
-                children: const [
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.white,
-                  ),
-                  Text("Items Registrado")
-                ],
-              )));
+      if (widget.modelItems == null) {
+        DBAdmin.db.insertamosItems(model).then((value) {
+          if (value > 0) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.indigo,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14)),
+                duration: const Duration(milliseconds: 1400),
+                behavior: SnackBarBehavior.floating,
+                content: Row(
+                  children: const [
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                    ),
+                    Text("Items Registrado")
+                  ],
+                )));
 
-          _titulo.clear();
-          _des2.clear();
-          _des3.clear();
-          _des2.clear();
-        }
-      });
+            _titulo.clear();
+            _des2.clear();
+            _des3.clear();
+            _des2.clear();
+          }
+        });
+      } else {
+        model.id = widget.modelItems!.id!;
+        DBAdmin.db.updateItems(model).then((value) {
+          if (value > 0) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.indigo,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14)),
+                duration: const Duration(milliseconds: 1400),
+                behavior: SnackBarBehavior.floating,
+                content: Row(
+                  children: const [
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                    ),
+                    Text("Items Modificado")
+                  ],
+                )));
+
+            _titulo.clear();
+            _des2.clear();
+            _des3.clear();
+            _des2.clear();
+          }
+        });
+      }
     }
   }
 
@@ -131,6 +164,7 @@ class _FormItemsState extends State<FormItems> {
       idconvocatoria = widget.modelConvo!.id;
     }
     if (widget.modelItems != null) {
+      idconvocatoria = widget.modelItems!.idconvocatoria;
       _titulo.text = widget.modelItems!.titulo;
       _des5.text = widget.modelItems!.des5;
       _des4.text = widget.modelItems!.des4;
@@ -355,7 +389,7 @@ class _FormItemsState extends State<FormItems> {
                                     SizedBox(width: 10),
                                     ElevatedButton.icon(
                                         onPressed: () {
-                                          if (ItemsModel != null) {
+                                          if (widget.modelItems != null) {
                                             DBAdmin.db
                                                 .getItemsPorcentajeTotal(widget
                                                     .modelItems!.idconvocatoria)
@@ -382,6 +416,7 @@ class _FormItemsState extends State<FormItems> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         GuardarItems();
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
