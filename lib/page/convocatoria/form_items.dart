@@ -365,7 +365,7 @@ class _FormItemsState extends State<FormItems> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Visibility(
-                              visible: true,
+                              visible: false,
                               child: Container(
                                   width: 130,
                                   child: TextFieldNormalWidget(
@@ -377,7 +377,7 @@ class _FormItemsState extends State<FormItems> {
                                   )),
                             ),
                             Container(
-                                width: 150,
+                                width: 160,
                                 height: 100,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

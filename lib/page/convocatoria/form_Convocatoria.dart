@@ -36,15 +36,18 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
         Titulo: _tituConvocato.text,
         Estado: "Activo");
     DBAdmin.db.updateConvocatoria(modelConvocatoria);
-
-    //evaluadores
-    /*
-    ConEvaluador modelConEvaluador =
-        ConEvaluador(idevaluador: 1, idconvocatoria: widget.modelConvo.id);
-    DBAdmin.db.insertamosConvocatoriaEvaluador(modelConEvaluador);
-  */
   }
-
+ deleteItems(int id){
+    DBAdmin.db.deleteItems(id).then((value) {
+        if (value > 0){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Row(children: const [  Icon(Icons.check_circle, color: Colors.white),
+            SizedBox(width: 10),
+            Text("Items Eliminado")]),
+          ));
+        }
+    });
+  }
   obtenemosConvocatoria() {}
 
   listarEvaluadores() {
@@ -57,10 +60,6 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
 
   obtenemosConvocatoriaEvaluador() {
     DBAdmin.db.getNombreEvaluadores(2);
-  }
-
-  TodoobtenemosConvocatoriaEvaluador() {
-    DBAdmin.db.getConvocatoriaEvaluador();
   }
 
   optenemosTotal() {
@@ -147,10 +146,18 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                             scrollDirection: Axis.horizontal,
                             itemCount: listModel.length,
                             itemBuilder: (BuildContext ctx, index) {
-                              return CardItems(
-                                modelItems: listModel[index],
-                                modelConvo: ConvocatoriaModel(
-                                    id: listModel[index].idconvocatoria),
+                              return Dismissible(
+                                key: UniqueKey(),
+                                direction:DismissDirection.vertical,
+                                background: Container(color: Colors.amber),
+                                onDismissed: (DismissDirection direction) {
+                                           deleteItems(listModel[index].idconvocatoria);
+                                },
+                                child: CardItems(
+                                  modelItems: listModel[index],
+                                  modelConvo: ConvocatoriaModel(
+                                      id: listModel[index].idconvocatoria),
+                                ),
                               );
                             });
                       }
@@ -189,6 +196,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                                 duration: const Duration(milliseconds: 1600),
                                 behavior: SnackBarBehavior.floating,
                                 content: Row(
+                                
                                   children: const [
                                     Icon(
                                       Icons.warning,
@@ -198,7 +206,7 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                                       width: 10.0,
                                     ),
                                     Text(
-                                      "Items Supera el 100 % ",
+                                      "Items Supera El 100 % ",
                                       style: TextStyle(color: Colors.black),
                                     )
                                   ],
@@ -223,17 +231,9 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                         MaterialPageRoute(
                             builder: (BuildContext context) => MenuPage()));
                   },
-                  child: Text("TERMINAR")),
-              ElevatedButton(
-                  onPressed: () {
-                    DBAdmin.db.getItemsTodos();
-                  },
-                  child: Text("obtener todos")),
-              ElevatedButton(
-                  onPressed: () {
-                    print(optenemosTotal());
-                  },
-                  child: Text("obte VALOR")),
+                  child: Text("FINALIZAR REGISTRO")),
+              
+              
             ],
           ),
         ),

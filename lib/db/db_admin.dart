@@ -64,7 +64,7 @@ class DBAdmin {
     return resul;
   }
 
-  //modificamos
+  //modificamos items
   Future<int> updateItems(ItemsModel ItemsModel) async {
     Database? db = await checkDatabase();
     int resul = await db!.update(
@@ -83,7 +83,7 @@ class DBAdmin {
     return resul;
   }
 
-  //elimamos
+  //elimamos items
   Future<int> deleteItems(int idItems) async {
     Database? db = await checkDatabase();
     int resul = await db!.delete("ITEMS", where: "id=$idItems");
@@ -211,11 +211,24 @@ class DBAdmin {
   }
 
   //obtenemosConvocatoriaEvaluador Evaluadores de convocatoria
-  Future<List<ConEvaluadorModel>> getConvocatoriasEvaluadores(
-      int idEvalua, int idConvoca) async {
-    Database? db = await checkDatabase();
+  Future<List<ConEvaluadorModel>> getConvocatoriasActivasEvaluadores(
+      int idconvocatoria) async {
+      
+      Database? db = await checkDatabase();
+      Database? db2 = await checkDatabase();
+      List<int> lista= [];
+
+      //obtener convocatorias Activas 
+    List<Map<String,dynamic>> listaConvo= await db2!.rawQuery("SELECT * FROM CONVOCATORA WHERE ESTADO='ACTIVO')");
+      listaConvo.forEach((element) {
+        lista.add(element["id"]);
+      },);
+
+      //evaluadores con convocatoria acti
     List<Map<String, dynamic>> listaBD = await db!.rawQuery(
-        "SELECT * FROM CONEVALUADOR WHERE idevaluador=$idEvalua and idconvocatoria=$idConvoca");
+        "SELECT * FROM EVALUADOR WHERE idconvocatori in IN(${List.filled(lista.length, '?').join(',')})",
+        lista);
+
     List<ConEvaluadorModel> lisModel =
         listaBD.map((e) => ConEvaluadorModel.deMapAModel(e)).toList();
     return lisModel;
@@ -260,7 +273,6 @@ class DBAdmin {
   Future<List<ConvocatoriaModel>> getConvocatorias() async {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> listaBD = await db!.query("CONVOCATORIA");
-    print(listaBD);
     List<ConvocatoriaModel> lisModel =
         listaBD.map((e) => ConvocatoriaModel.deMapAModel(e)).toList();
     return lisModel;
