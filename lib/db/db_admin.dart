@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
-import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/evaluador.dart';
+import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/items.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
@@ -211,26 +211,46 @@ class DBAdmin {
   }
 
   //obtenemosConvocatoriaEvaluador Evaluadores de convocatoria
-  Future<List<ConEvaluadorModel>> getConvocatoriasActivasEvaluadores(
-      int idconvocatoria) async {
-      
-      Database? db = await checkDatabase();
-      Database? db2 = await checkDatabase();
-      List<int> lista= [];
+  Future<List<ConvocatoriaModel>> getConvocatoriasActivasEvaluadores(
+      int idevaluador) async {
+    //variables
+    Database? db = await checkDatabase();
+    Database? db2 = await checkDatabase();
+    Database? db3 = await checkDatabase();
+    List<int> listaConvo = [];
+    List<int> listaEvaluador = [];
 
-      //obtener convocatorias Activas 
-    List<Map<String,dynamic>> listaConvo= await db2!.rawQuery("SELECT * FROM CONVOCATORA WHERE ESTADO='ACTIVO')");
-      listaConvo.forEach((element) {
-        lista.add(element["id"]);
-      },);
+    //obtener convocatorias Activas
+    List<Map<String, dynamic>> listaConvoActivas = await db2!
+        .rawQuery("SELECT * FROM CONVOCATORIA WHERE estado= " '"Activo"' "");
+    print(listaConvoActivas);
 
-      //evaluadores con convocatoria acti
+    listaConvoActivas.forEach(
+      (element) {
+        listaConvo.add(element["id"]);
+      },
+    );
+
+    //convocatorias activas desiganadas a un evaluador
     List<Map<String, dynamic>> listaBD = await db!.rawQuery(
-        "SELECT * FROM EVALUADOR WHERE idconvocatori in IN(${List.filled(lista.length, '?').join(',')})",
-        lista);
+        "SELECT * FROM CONEVALUADOR WHERE idevaluador=$idevaluador  AND idconvocatoria IN(${List.filled(listaConvo.length, '?').join(',')}) ",
+        listaConvo);
 
-    List<ConEvaluadorModel> lisModel =
-        listaBD.map((e) => ConEvaluadorModel.deMapAModel(e)).toList();
+    listaBD.forEach((element) {
+      listaEvaluador.add(element["idconvocatoria"]);
+    });
+
+    //lista de convocatorias en modelo
+    List<Map<String, dynamic>> ConListaBD = await db3!.rawQuery(
+        "SELECT * FROM CONVOCATORIA WHERE id IN(${List.filled(listaEvaluador.length, '?').join(',')}) ",
+        listaEvaluador);
+
+    List<ConvocatoriaModel> lisModel =
+        ConListaBD.map((e) => ConvocatoriaModel.deMapAModel(e)).toList();
+
+    print("LA LISTA $listaBD");
+
+    print("Las Convocatorias $lisModel");
     return lisModel;
   }
 

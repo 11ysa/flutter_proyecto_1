@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/page/Evaluacion/home_evaluacion.dart';
 import 'package:flutter_proyecto_1/page/Evaluador/home_evaluador.dart';
 import 'package:flutter_proyecto_1/page/menu_page.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
@@ -123,6 +124,26 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(14))),
                   icon: Icon(Icons.supervised_user_circle_outlined),
                   label: Text("EVALUADOR")),
+            ),
+            Divider(
+              thickness: 2.5,
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomeEvaluacion()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                      primary: dcolorButon2,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14))),
+                  icon: Icon(Icons.supervised_user_circle_outlined),
+                  label: Text("Evaluacion")),
             )
           ],
         ),
