@@ -210,6 +210,16 @@ class DBAdmin {
     return res;
   }
 
+  //obtenemos cantidad de convocatoria Evaluador
+  getCantidadEvaluadorConvocatoria(int idevaluador) async {
+    Database? db = await checkDatabase();
+
+    final count = await db!.rawQuery(
+        "SELECT COUNT(*) as total FROM CONEVALUADOR where idevaluador =$idevaluador");
+
+    return count[0]['total'];
+  }
+
   //obtenemosConvocatoriaEvaluador Evaluadores de convocatoria
   Future<List<ConvocatoriaModel>> getConvocatoriasActivasEvaluadores(
       int idevaluador) async {
@@ -221,8 +231,8 @@ class DBAdmin {
     List<int> listaEvaluador = [];
 
     //obtener convocatorias Activas
-    List<Map<String, dynamic>> listaConvoActivas = await db2!
-        .rawQuery("SELECT * FROM CONVOCATORIA WHERE estado= " '"Activo"' "");
+    List<Map<String, dynamic>> listaConvoActivas =
+        await db2!.rawQuery("SELECT * FROM CONVOCATORIA");
     print(listaConvoActivas);
 
     listaConvoActivas.forEach(
@@ -248,7 +258,7 @@ class DBAdmin {
     List<ConvocatoriaModel> lisModel =
         ConListaBD.map((e) => ConvocatoriaModel.deMapAModel(e)).toList();
 
-    print("LA LISTA $listaBD");
+    print("LA LISTA $lisModel");
 
     print("Las Convocatorias $lisModel");
     return lisModel;
