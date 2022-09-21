@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
-import 'package:flutter_proyecto_1/models/evaluador.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/form_Convocatoria.dart';
-import 'package:flutter_proyecto_1/page/menu_page.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/form_Convocatoria.dart';
+import 'package:flutter_proyecto_1/page/Organizador/menu_page.dart';
 import 'package:flutter_proyecto_1/ui/generales/textfield_normal_widget.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeConvocatoria extends StatefulWidget {
   const HomeConvocatoria({Key? key}) : super(key: key);

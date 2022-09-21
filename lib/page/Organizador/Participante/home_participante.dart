@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/page/Participante/widget.dart';
+import 'package:flutter_proyecto_1/db/db_admin.dart';
+import 'package:flutter_proyecto_1/models/participante.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Participante/widget.dart';
+import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../db/db_admin.dart';
-import '../../models/participante.dart';
-import '../../ui/generales/colors.dart';
 import 'form_participante.dart';
 
 class HomePaticipante extends StatefulWidget {

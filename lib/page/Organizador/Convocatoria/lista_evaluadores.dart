@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/form_Convocatoria.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/home_Convocatoria.dart';
+import 'package:flutter_proyecto_1/models/evaluador.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/form_Convocatoria.dart';
+import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../db/db_admin.dart';
-import '../../models/evaluador.dart';
-import '../../ui/generales/colors.dart';
 
 class ListEvaluadores extends StatefulWidget {
   ConvocatoriaModel? model;

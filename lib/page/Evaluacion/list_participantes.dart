@@ -1,54 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/models/convocatoria.dart';
+import 'package:flutter_proyecto_1/page/Evaluacion/list_items.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Participante/widget.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../db/db_admin.dart';
 import '../../models/participante.dart';
 import '../../ui/generales/colors.dart';
-import '../Participante/form_participante.dart';
-import '../Participante/widget.dart';
-import 'list_convocatorias.dart';
 
+// ignore: must_be_immutable
 class ListParticipantesConvo extends StatefulWidget {
-  const ListParticipantesConvo({Key? key}) : super(key: key);
+  ConvocatoriaModel modelConvo;
+  ListParticipantesConvo({Key? key, required this.modelConvo})
+      : super(key: key);
 
   @override
   State<ListParticipantesConvo> createState() => _ListParticipantesConvoState();
 }
 
 class _ListParticipantesConvoState extends State<ListParticipantesConvo> {
- /* Variables */
+  /* Variables */
   ParticipanteModel? modelParticipante;
-
-  /* Procedimientos */
-
-  //eliminar participante
-
-  deleteParticipante(int id) {
-    DBAdmin.db.deleteParticipante(id).then((value) {
-      if (value > 0) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Row(
-          children: const [
-            Icon(Icons.check_circle, color: Colors.white),
-            SizedBox(width: 10),
-            Text("Participante Eliminado")
-          ],
-        )));
-      }
-    });
-  }
-
-//Mostrar Formulario
-  showParticipante() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return FormParticipante(modelPartici: modelParticipante);
-        }).then((value) {
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +34,16 @@ class _ListParticipantesConvoState extends State<ListParticipantesConvo> {
                 return ListView.builder(
                     itemCount: listaPar.length,
                     itemBuilder: (BuildContext context, index) {
+                      modelParticipante = listaPar[index];
                       return GestureDetector(
                         onTap: () {
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => ListConvocatoriasActivas()));
-                          
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListItems(
+                                        modelPart: modelParticipante!,
+                                        modelConv: widget.modelConvo,
+                                      )));
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(
@@ -73,13 +51,19 @@ class _ListParticipantesConvoState extends State<ListParticipantesConvo> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 5, vertical: 5),
                           decoration: BoxDecoration(
-                              color: dcolorFondoItems,
                               borderRadius: BorderRadius.circular(14),
-                              boxShadow: [
+                              gradient: const LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  tileMode: TileMode.clamp,
+                                  colors: [
+                                    Color(0xff363f93),
+                                    Color(0xff8E7AF0)
+                                  ]),
+                              boxShadow: const [
                                 BoxShadow(
-                                  color: dcolorBordeItems,
-                                  blurRadius: 12,
-                                  offset: const Offset(4, 4),
+                                  blurRadius: 0.2,
+                                  spreadRadius: 2,
                                 )
                               ]),
                           child: Row(
@@ -90,24 +74,33 @@ class _ListParticipantesConvoState extends State<ListParticipantesConvo> {
                                 children: [
                                   Row(
                                     children: [
-                                      SvgPicture.asset(
-                                          'assets/icons/user.svg',
-                                          height: 16.0,
+                                      SvgPicture.asset('assets/icons/user.svg',
+                                          height: 18.0,
                                           color: dColorFontPrimary),
                                       const SizedBox(
                                         width: 4.0,
                                       ),
-                                      Text(
-                                        listaPar[index].nombreCompleto(),
-                                        style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: dColorFontPrimary
-                                              .withOpacity(0.7),
-                                        ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            listaPar[index].nombre,
+                                            style: const TextStyle(
+                                              fontSize: 18.0,
+                                              color: Colors.amberAccent,
+                                            ),
+                                          ),
+                                          Text(
+                                            listaPar[index].apellidos,
+                                            style: TextStyle(
+                                              fontSize: 14.0,
+                                              color: dColorFontPrimary,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10.0,
                                   ),
                                   Row(
@@ -130,21 +123,18 @@ class _ListParticipantesConvoState extends State<ListParticipantesConvo> {
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 12.0,
-                                                  color: dColorFontPrimary
-                                                      .withOpacity(0.7),
+                                                  color: dColorFontPrimary,
                                                 ),
                                               ),
                                               Text(
                                                 listaPar[index].dni,
                                                 style: TextStyle(
-                                                  fontSize: 13.0,
-                                                  color: dColorFontPrimary
-                                                      .withOpacity(0.7),
-                                                ),
+                                                    fontSize: 13.0,
+                                                    color: dColorFontPrimary),
                                               )
                                             ],
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 20,
                                           ),
                                           Column(
@@ -156,23 +146,19 @@ class _ListParticipantesConvoState extends State<ListParticipantesConvo> {
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 14.0,
-                                                  color: dColorFontPrimary
-                                                      .withOpacity(0.7),
+                                                  color: dColorFontPrimary,
                                                 ),
                                               ),
                                               Text(
-                                                listaPar[index]
-                                                    .edad
-                                                    .toString(),
+                                                listaPar[index].edad.toString(),
                                                 style: TextStyle(
                                                   fontSize: 14.0,
-                                                  color: dColorFontPrimary
-                                                      .withOpacity(0.7),
+                                                  color: dColorFontPrimary,
                                                 ),
                                               )
                                             ],
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 20,
                                           ),
                                           Column(
@@ -184,16 +170,14 @@ class _ListParticipantesConvoState extends State<ListParticipantesConvo> {
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 14.0,
-                                                  color: dColorFontPrimary
-                                                      .withOpacity(0.7),
+                                                  color: dColorFontPrimary,
                                                 ),
                                               ),
                                               Text(
                                                 listaPar[index].especialidad,
                                                 style: TextStyle(
                                                   fontSize: 14.0,
-                                                  color: dColorFontPrimary
-                                                      .withOpacity(0.7),
+                                                  color: dColorFontPrimary,
                                                 ),
                                               )
                                             ],
@@ -204,18 +188,16 @@ class _ListParticipantesConvoState extends State<ListParticipantesConvo> {
                                   ),
                                 ],
                               ),
-                              Container(
-                                  child: Row(
+                              Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   IconButton(
                                       onPressed: () {
                                         modelParticipante = listaPar[index];
-                                        // showParticipante();
                                       },
                                       icon: const Icon(Icons.list_alt))
                                 ],
-                              ))
+                              )
                             ],
                           ),
                         ),

@@ -100,10 +100,12 @@ class DBAdmin {
     return listModel;
   }
 
+  //listamos items de convocatoria
   Future<List<ItemsModel>> getItems(int idConvocatoria) async {
     Database? db = await checkDatabase();
     List<Map<String, dynamic>> listaDB = await db!
         .rawQuery("SELECT * FROM ITEMS WHERE idconvocatoria=$idConvocatoria");
+    print(listaDB);
     List<ItemsModel> listModel =
         listaDB.map((e) => ItemsModel.deMapModel(e)).toList();
     return listModel;
@@ -156,7 +158,8 @@ class DBAdmin {
   }
 
   //obtenemosConvocatoriaParticpante Particpante de convocatoria
-  Future<List<ParticipanteModel>> getNombreParticipantes(int? idConvoca) async {
+  Future<List<ParticipanteModel>> getNombreParticipantesConvo(
+      int? idConvoca) async {
     Database? db = await checkDatabase();
     Database? dbe = await checkDatabase();
     //creamos la lista
@@ -177,6 +180,14 @@ class DBAdmin {
         listaParti.map((e) => ParticipanteModel.deMapAModel(e)).toList();
 
     return lisModel;
+  }
+
+  //cantidad de participantes en convocatoria
+  Future<String> getCantidadParticipanteConvocatoria(int? idConvo) async {
+    Database? db = await checkDatabase();
+    final count = await db!.rawQuery(
+        "SELECT COUNT(*) as total FROM CONPARTICIPANTE WHERE idconvocatoria=$idConvo");
+    return count[0]['total'].toString();
   }
 
   //obtenemosConvocatoriaPartipante Evaluadores de convocatoria
@@ -211,13 +222,13 @@ class DBAdmin {
   }
 
   //obtenemos cantidad de convocatoria Evaluador
-  getCantidadEvaluadorConvocatoria(int idevaluador) async {
+  Future<String> getCantidadEvaluadorConvocatoria(int idevaluador) async {
     Database? db = await checkDatabase();
 
     final count = await db!.rawQuery(
-        "SELECT COUNT(*) as total FROM CONEVALUADOR where idevaluador =$idevaluador");
+        "SELECT COUNT(*) as total FROM CONEVALUADOR where idconvocatoria =$idevaluador");
 
-    return count[0]['total'];
+    return count[0]['total'].toString();
   }
 
   //obtenemosConvocatoriaEvaluador Evaluadores de convocatoria
@@ -348,6 +359,7 @@ class DBAdmin {
   }
 
   /* participantes */
+
   //insertar participantes
   Future<int> insertParticipante(ParticipanteModel participante) async {
     Database? db = await checkDatabase();
@@ -397,7 +409,24 @@ class DBAdmin {
     return res;
   }
 
-  //****************************************************************** */
+  //**************************Evaluador**************************************** */
+
+  //inicio de seccion
+  Future<List<EvaluadorModel>?> getLoginEvaluador(
+      String identidad, String clave) async {
+    Database? db = await checkDatabase();
+    List<Map<String, dynamic>> listadb = await db!.rawQuery(
+        "SELECT * FROM EVALUADOR WHERE dni='$identidad' AND clave='$clave'");
+
+    List<EvaluadorModel> lista =
+        listadb.map((e) => EvaluadorModel.deMapAModel(e)).toList();
+
+    if (lista.isNotEmpty) {
+      return lista;
+    } else {
+      return null;
+    }
+  }
 
   //registrar Evaluador
   Future<int> insertEvaluador(EvaluadorModel EvaluadorModel) async {
@@ -439,7 +468,6 @@ class DBAdmin {
     List<Map<String, dynamic>> listaMap = await db!.query("EVALUADOR");
     List<EvaluadorModel> listModel =
         listaMap.map((e) => EvaluadorModel.deMapAModel(e)).toList();
-    print(listModel);
     return listModel;
   }
 

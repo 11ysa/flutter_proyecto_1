@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/evaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/lista_evaluadores.dart';
-
-import '../../ui/generales/colors.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/lista_evaluadores.dart';
+import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
 class CardEvaluadores extends StatefulWidget {
   ConvocatoriaModel? model;

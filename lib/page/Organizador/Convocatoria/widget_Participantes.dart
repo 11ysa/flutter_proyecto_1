@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/lista_participantes.dart';
-
-import '../../db/db_admin.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/lista_participantes.dart';
 
 class CardParticipantes extends StatefulWidget {
   ConvocatoriaModel? model;
@@ -49,7 +47,6 @@ class _CardParticipantesState extends State<CardParticipantes> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     idconvocatoria = widget.model!.id;
   }
@@ -64,7 +61,7 @@ class _CardParticipantesState extends State<CardParticipantes> {
         padding: const EdgeInsets.all(2),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Row(
@@ -84,11 +81,12 @@ class _CardParticipantesState extends State<CardParticipantes> {
                 ),
               ],
             ),
-            Container(
+            SizedBox(
               width: 300,
               height: 100,
               child: FutureBuilder(
-                  future: DBAdmin.db.getNombreParticipantes(widget.model!.id),
+                  future:
+                      DBAdmin.db.getNombreParticipantesConvo(widget.model!.id),
                   builder: (BuildContext context, AsyncSnapshot snap) {
                     if (snap.hasData) {
                       List<ParticipanteModel> modelListPartic = snap.data;
@@ -106,7 +104,7 @@ class _CardParticipantesState extends State<CardParticipantes> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Divider(
+                                  const Divider(
                                     thickness: 1,
                                   ),
                                   Text(modelListPartic[index].nombreCompleto()),
@@ -117,7 +115,7 @@ class _CardParticipantesState extends State<CardParticipantes> {
                                         modelListPartic[index].dni,
                                         style: TextStyle(fontSize: 12),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 30,
                                       ),
                                       Text(
@@ -151,12 +149,14 @@ class _CardParticipantesState extends State<CardParticipantes> {
                     onPressed: () {
                       showParticipantes();
                     },
-                    child: Icon(
+                    // ignore: sort_child_properties_last
+                    child: const Icon(
                       Icons.add,
                       size: 15,
                     ),
                     style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(), padding: EdgeInsets.all(5)),
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(5)),
                   ),
                 ),
               ],

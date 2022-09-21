@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
-import 'package:path/path.dart';
-
-import '../../ui/generales/colors.dart';
-import '../convocatoria/lista_participantes.dart';
+import 'package:flutter_proyecto_1/models/evaluador.dart';
+import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 import 'list_participantes.dart';
 
 class ListConvocatoriasActivas extends StatefulWidget {
-  const ListConvocatoriasActivas({Key? key}) : super(key: key);
+  EvaluadorModel model;
+  ListConvocatoriasActivas({Key? key, required this.model}) : super(key: key);
 
   @override
   State<ListConvocatoriasActivas> createState() =>
@@ -17,18 +15,14 @@ class ListConvocatoriasActivas extends StatefulWidget {
 }
 
 class _ListConvocatoriasActivasState extends State<ListConvocatoriasActivas> {
+  /* variables */
+  ConvocatoriaModel? modelConv;
   /* Procedimientos */
-  cantidadParticipantes(int? id) {
-    return "1";
-  }
 
-  String cantidadEvaluadores(int id) {
-    print("el  id $id");
-    DBAdmin.db.getCantidadEvaluadorConvocatoria(id).then((value) {
-      print("El value $value");
-      return value.toString();
-    });
-    return "1";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -39,13 +33,16 @@ class _ListConvocatoriasActivasState extends State<ListConvocatoriasActivas> {
         backgroundColor: dcolorAppBar,
       ),
       body: FutureBuilder(
-          future: DBAdmin.db.getConvocatoriasActivasEvaluadores(1),
+          future:
+              DBAdmin.db.getConvocatoriasActivasEvaluadores(widget.model.id!),
           builder: (BuildContext context, AsyncSnapshot snap) {
             if (snap.hasData) {
               List<ConvocatoriaModel> miModelConvo = snap.data;
+
               return ListView.builder(
                   itemCount: miModelConvo.length,
                   itemBuilder: (BuildContext context, int index) {
+                    modelConv = miModelConvo[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 3.0, horizontal: 12.0),
@@ -58,10 +55,7 @@ class _ListConvocatoriasActivasState extends State<ListConvocatoriasActivas> {
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                                 tileMode: TileMode.clamp,
-                                colors: [
-                                  Color.fromARGB(255, 102, 128, 235),
-                                  Color(0xff8E7AF0)
-                                ]),
+                                colors: [Color(0xff363f93), Color(0xff8E7AF0)]),
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 0.2,
@@ -74,7 +68,8 @@ class _ListConvocatoriasActivasState extends State<ListConvocatoriasActivas> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        ListParticipantesConvo()));
+                                        ListParticipantesConvo(
+                                            modelConvo: modelConv!)));
                           },
                           leading: CircleAvatar(
                               child: Text(
@@ -85,19 +80,32 @@ class _ListConvocatoriasActivasState extends State<ListConvocatoriasActivas> {
                           title: Text(miModelConvo[index].Titulo.toString(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 18.0,
                                   color: Colors.amberAccent,
                                   fontWeight: FontWeight.bold)),
                           subtitle: Row(children: [
                             Column(
                               children: [
-                                Text(
-                                    cantidadParticipantes(
-                                        miModelConvo[index].id),
-                                    style: TextStyle(
-                                        fontSize: 10.0, color: Colors.black)),
-                                Text("Participantes",
+                                FutureBuilder(
+                                  future: DBAdmin.db
+                                      .getCantidadParticipanteConvocatoria(
+                                          miModelConvo[index].id),
+                                  builder: ((context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(snapshot.data.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 10.0,
+                                              color: Colors.black));
+                                    } else {
+                                      return const Text("0",
+                                          style: TextStyle(
+                                              fontSize: 10.0,
+                                              color: Colors.black));
+                                    }
+                                  }),
+                                ),
+                                const Text("Participantes",
                                     style: TextStyle(
                                         fontSize: 10.0, color: Colors.black)),
                               ],
@@ -105,11 +113,24 @@ class _ListConvocatoriasActivasState extends State<ListConvocatoriasActivas> {
                             const SizedBox(width: 25),
                             Column(
                               children: [
-                                Text(
-                                    cantidadEvaluadores(miModelConvo[index].id!)
-                                        .toString(),
-                                    style: const TextStyle(
-                                        fontSize: 10.0, color: Colors.black)),
+                                FutureBuilder(
+                                  future: DBAdmin.db
+                                      .getCantidadEvaluadorConvocatoria(
+                                          miModelConvo[index].id!),
+                                  builder: ((context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(snapshot.data.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 10.0,
+                                              color: Colors.black));
+                                    } else {
+                                      return const Text("0",
+                                          style: TextStyle(
+                                              fontSize: 10.0,
+                                              color: Colors.black));
+                                    }
+                                  }),
+                                ),
                                 const Text("Evaluadores",
                                     style: TextStyle(
                                         fontSize: 10.0, color: Colors.black))

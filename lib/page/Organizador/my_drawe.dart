@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_proyecto_1/page/Evaluador/home_evaluador.dart';
-import 'package:flutter_proyecto_1/page/Participante/home_participante.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/form_Convocatoria.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/home_convocatoria.dart';
-import 'package:flutter_proyecto_1/page/menu_page.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/home_convocatoria.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Evaluador/home_evaluador.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Participante/home_participante.dart';
+import 'package:flutter_proyecto_1/page/Organizador/menu_page.dart';
 
 class MyDrawe extends StatelessWidget {
   const MyDrawe({Key? key}) : super(key: key);
@@ -16,7 +13,7 @@ class MyDrawe extends StatelessWidget {
       child: Column(
         children: [
           DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.cover,
                       image: AssetImage("assets/images/menu.jpg"))),
@@ -25,7 +22,7 @@ class MyDrawe extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     CircleAvatar(
                       radius: 30,
                       backgroundImage:

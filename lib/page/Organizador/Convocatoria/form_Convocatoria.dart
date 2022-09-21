@@ -1,18 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
-import 'package:flutter_proyecto_1/models/conevaluador.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/items.dart';
-import 'package:flutter_proyecto_1/models/participante.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/form_items.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/home_convocatoria.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/widget_Evaluadores.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/widget_Participantes.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/widget_items.dart';
-import 'package:flutter_proyecto_1/page/menu_page.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/form_items.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/home_convocatoria.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/widget_Evaluadores.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/widget_Participantes.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/widget_items.dart';
+import 'package:flutter_proyecto_1/page/Organizador/menu_page.dart';
 
-import '../../ui/generales/colors.dart';
+import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
 class FormConvocatoria extends StatefulWidget {
   ConvocatoriaModel? modelConvo;
@@ -37,17 +34,21 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
         Estado: "Activo");
     DBAdmin.db.updateConvocatoria(modelConvocatoria);
   }
- deleteItems(int id){
+
+  deleteItems(int id) {
     DBAdmin.db.deleteItems(id).then((value) {
-        if (value > 0){
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Row(children: const [  Icon(Icons.check_circle, color: Colors.white),
+      if (value > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Row(children: const [
+            Icon(Icons.check_circle, color: Colors.white),
             SizedBox(width: 10),
-            Text("Items Eliminado")]),
-          ));
-        }
+            Text("Items Eliminado")
+          ]),
+        ));
+      }
     });
   }
+
   obtenemosConvocatoria() {}
 
   listarEvaluadores() {
@@ -148,10 +149,10 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                             itemBuilder: (BuildContext ctx, index) {
                               return Dismissible(
                                 key: UniqueKey(),
-                                direction:DismissDirection.vertical,
+                                direction: DismissDirection.vertical,
                                 background: Container(color: Colors.amber),
                                 onDismissed: (DismissDirection direction) {
-                                           deleteItems(listModel[index].idconvocatoria);
+                                  deleteItems(listModel[index].idconvocatoria);
                                 },
                                 child: CardItems(
                                   modelItems: listModel[index],
@@ -196,7 +197,6 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                                 duration: const Duration(milliseconds: 1600),
                                 behavior: SnackBarBehavior.floating,
                                 content: Row(
-                                
                                   children: const [
                                     Icon(
                                       Icons.warning,
@@ -232,8 +232,6 @@ class _FormConvocatoriaState extends State<FormConvocatoria> {
                             builder: (BuildContext context) => MenuPage()));
                   },
                   child: Text("FINALIZAR REGISTRO")),
-              
-              
             ],
           ),
         ),

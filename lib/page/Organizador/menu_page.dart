@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/page/my_drawe.dart';
+import 'package:flutter_proyecto_1/page/Organizador/my_drawe.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 
 class MenuPage extends StatelessWidget {

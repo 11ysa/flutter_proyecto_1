@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/items.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/form_items.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/form_items.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class CardItems extends StatefulWidget {

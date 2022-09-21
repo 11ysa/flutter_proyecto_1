@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/evaluador.dart';
-
-import '../../db/db_admin.dart';
-import '../../ui/generales/colors.dart';
-import '../../ui/generales/textfield_normal_widget.dart';
+import 'package:flutter_proyecto_1/ui/generales/colors.dart';
+import 'package:flutter_proyecto_1/ui/generales/textfield_normal_widget.dart';
 
 class FormEvaluador extends StatefulWidget {
   EvaluadorModel? eModel;

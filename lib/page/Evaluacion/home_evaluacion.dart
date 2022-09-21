@@ -16,14 +16,7 @@ class HomeEvaluacion extends StatelessWidget {
           child: Row(
             children: [
               ElevatedButton(
-                  onPressed: () {
-                    // print(DBAdmin.db.getConvocatoriasActivasEvaluadores(1));
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) =>
-                                ListConvocatoriasActivas())));
-                  },
+                  onPressed: () {},
                   child: Text("convocatorias Segun Evaluador"))
             ],
           ),

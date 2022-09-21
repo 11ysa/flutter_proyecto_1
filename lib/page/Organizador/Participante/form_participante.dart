@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../db/db_admin.dart';
-import '../../models/participante.dart';
-import '../../ui/generales/colors.dart';
-import '../../ui/generales/textfield_normal_widget.dart';
+import 'package:flutter_proyecto_1/db/db_admin.dart';
+import 'package:flutter_proyecto_1/models/participante.dart';
+import 'package:flutter_proyecto_1/ui/generales/colors.dart';
+import 'package:flutter_proyecto_1/ui/generales/textfield_normal_widget.dart';
 
 class FormParticipante extends StatefulWidget {
   ParticipanteModel? modelPartici;

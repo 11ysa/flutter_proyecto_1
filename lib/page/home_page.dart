@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:flutter_proyecto_1/page/Evaluacion/home_evaluacion.dart';
-import 'package:flutter_proyecto_1/page/Evaluador/home_evaluador.dart';
-import 'package:flutter_proyecto_1/page/menu_page.dart';
+import 'package:flutter_proyecto_1/page/Organizador/menu_page.dart';
+import 'package:flutter_proyecto_1/page/login_page.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
+
+import 'Organizador/Evaluador/home_evaluador.dart';
 
 class HomePage extends StatelessWidget {
   TextEditingController codigo = TextEditingController();
@@ -136,7 +136,9 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HomeEvaluacion()));
+                            builder: (context) => LoginPage(
+                                  type: "Evaluador",
+                                )));
                   },
                   style: ElevatedButton.styleFrom(
                       primary: dcolorButon2,

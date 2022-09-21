@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
 import 'package:flutter_proyecto_1/models/items.dart';
-import 'package:flutter_proyecto_1/page/convocatoria/form_Convocatoria.dart';
+import 'package:flutter_proyecto_1/page/Organizador/Convocatoria/form_Convocatoria.dart';
 import 'package:flutter_proyecto_1/ui/generales/colors.dart';
 import 'package:flutter_proyecto_1/ui/generales/textfield_normal_widget.dart';
 
