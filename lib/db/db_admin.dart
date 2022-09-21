@@ -118,6 +118,7 @@ class DBAdmin {
     List<Map<String, dynamic>> listaDB = await db!
         .rawQuery("SELECT * FROM ITEMS WHERE idconvocatoria=$idConvocatoria");
 
+    // ignore: avoid_function_literals_in_foreach_calls
     listaDB.forEach((element) {
       valor = valor + int.parse(element["porcentaje"].toString());
     });

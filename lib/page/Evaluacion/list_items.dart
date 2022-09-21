@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_proyecto_1/db/db_admin.dart';
 import 'package:flutter_proyecto_1/models/convocatoria.dart';
+import 'package:flutter_proyecto_1/models/evaluador.dart';
+import 'package:flutter_proyecto_1/models/items.dart';
 import 'package:flutter_proyecto_1/models/participante.dart';
 
 class ListItems extends StatefulWidget {
@@ -83,7 +85,7 @@ class _ListItemsState extends State<ListItems> {
             SizedBox(
               height: height * 0.02,
             ),
-            Container(
+            SizedBox(
               height: 160,
               child: Stack(
                 children: [
@@ -170,199 +172,232 @@ class _ListItemsState extends State<ListItems> {
                 ],
               ),
             ),
-            Expanded(
-                child: ListView(
-              children: [
-                Container(
-                  height: 240,
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  margin: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: const Color(0xff363f93),
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(50.0),
-                            topRight: Radius.circular(50.0)),
-                        boxShadow: [
-                          BoxShadow(
-                              color: const Color(0xFF363f93).withOpacity(0.3),
-                              offset: const Offset(-10.0, 0.0),
-                              blurRadius: 20.0,
-                              spreadRadius: 4.0)
-                        ]),
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      margin: const EdgeInsets.only(
-                          left: 8, right: 10, bottom: 8, top: 8),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "EXPERIENCIA LABORAL EN CARGOS DE GERENTE O JEFE DE RECURSOS HUMANOS",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: Colors.amber),
-                            ),
-                          ),
-                          Divider(color: Colors.black),
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  vineta(),
-                                  Container(
-                                    width: 240,
-                                    child: Expanded(
-                                      child: Text(
-                                        "TITULADO, DOBLE ESPECIALIDAD/ DIPLOMADFSDFSDFSDFSDFSDFGHFDGHDFGHDFGJDF",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+            FutureBuilder(
+                future: DBAdmin.db.getItems(1),
+                builder: (BuildContext context, AsyncSnapshot snap) {
+                  if (snap.hasData) {
+                    List<ItemsModel> miItemsModel = snap.data;
+                    return Expanded(
+                      child: ListView.builder(
+                          itemCount: miItemsModel.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return Container(
+                              height: 240,
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              margin: const EdgeInsets.only(
+                                  left: 8, right: 8, bottom: 8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: const Color(0xff363f93),
+                                    borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(50.0),
+                                        topRight: Radius.circular(50.0)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: const Color(0xFF363f93)
+                                              .withOpacity(0.3),
+                                          offset: const Offset(-10.0, 0.0),
+                                          blurRadius: 20.0,
+                                          spreadRadius: 4.0)
+                                    ]),
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, right: 8),
+                                  margin: const EdgeInsets.only(
+                                      left: 8, right: 10, bottom: 7, top: 8),
+                                  child: Column(
+                                    children: [
+                                      //titulo
+                                      Expanded(
+                                        child: Text(
+                                          miItemsModel[index].titulo,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              color: Colors.amber),
+                                        ),
                                       ),
-                                    ),
+                                      const Divider(color: Colors.black),
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              vineta(),
+                                              SizedBox(
+                                                //descripcion 5
+                                                width: 240,
+                                                child: Expanded(
+                                                  child: Text(
+                                                    miItemsModel[index].des5,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                //descripcion 4
+                                                height: 16,
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                        value: 1,
+                                                        groupValue: gender,
+                                                        onChanged:
+                                                            (int? value) {
+                                                          gender = value!;
+                                                          setState(() {});
+                                                        }),
+                                                  ],
+                                                ),
+                                              ),
+                                              const Text(
+                                                "5",
+                                                style: TextStyle(fontSize: 15),
+                                              )
+                                            ],
+                                          ),
+                                          Divider(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            indent: 15.0,
+                                            endIndent: 15.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              vineta(),
+                                              SizedBox(
+                                                //descripcion 4
+                                                width: 240,
+                                                child: Expanded(
+                                                  child: Text(
+                                                    miItemsModel[index].des4,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 16,
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                        value: 1,
+                                                        groupValue: gender,
+                                                        onChanged:
+                                                            (int? value) {
+                                                          gender = value!;
+                                                          setState(() {});
+                                                        }),
+                                                  ],
+                                                ),
+                                              ),
+                                              const Text(
+                                                "4",
+                                                style: TextStyle(fontSize: 15),
+                                              )
+                                            ],
+                                          ),
+                                          Divider(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            indent: 15.0,
+                                            endIndent: 15.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              vineta(),
+                                              SizedBox(
+                                                //descripcion 3
+                                                width: 240,
+                                                child: Expanded(
+                                                  child: Text(
+                                                    miItemsModel[index].des3,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 16,
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                        value: 1,
+                                                        groupValue: gender,
+                                                        onChanged:
+                                                            (int? value) {
+                                                          gender = value!;
+                                                          setState(() {});
+                                                        }),
+                                                  ],
+                                                ),
+                                              ),
+                                              const Text(
+                                                "3",
+                                                style: TextStyle(fontSize: 15),
+                                              )
+                                            ],
+                                          ),
+                                          Divider(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            indent: 15.0,
+                                            endIndent: 15.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              vineta(),
+                                              SizedBox(
+                                                //descrip 2
+                                                width: 240,
+                                                child: Expanded(
+                                                  child: Text(
+                                                    miItemsModel[index].des2,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 16,
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                        value: 1,
+                                                        groupValue: gender,
+                                                        onChanged:
+                                                            (int? value) {
+                                                          gender = value!;
+                                                          setState(() {});
+                                                        }),
+                                                  ],
+                                                ),
+                                              ),
+                                              Text(
+                                                "2",
+                                                style: TextStyle(fontSize: 15),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
                                   ),
-                                  Container(
-                                    height: 16,
-                                    child: Row(
-                                      children: [
-                                        Radio(
-                                            value: 1,
-                                            groupValue: gender,
-                                            onChanged: (int? value) {
-                                              gender = value!;
-                                              setState(() {});
-                                            }),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    "5",
-                                    style: TextStyle(fontSize: 15),
-                                  )
-                                ],
+                                ),
                               ),
-                              Divider(
-                                color: Colors.black.withOpacity(0.5),
-                                indent: 15.0,
-                                endIndent: 15.0,
-                              ),
-                              Row(
-                                children: [
-                                  vineta(),
-                                  Container(
-                                    width: 240,
-                                    child: Expanded(
-                                      child: Text(
-                                        "TITULADO, DOBLE ESPECIALIDAD/ DIPLOMA",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 16,
-                                    child: Row(
-                                      children: [
-                                        Radio(
-                                            value: 1,
-                                            groupValue: gender,
-                                            onChanged: (int? value) {
-                                              gender = value!;
-                                              setState(() {});
-                                            }),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    "4",
-                                    style: TextStyle(fontSize: 15),
-                                  )
-                                ],
-                              ),
-                              Divider(
-                                color: Colors.black.withOpacity(0.5),
-                                indent: 15.0,
-                                endIndent: 15.0,
-                              ),
-                              Row(
-                                children: [
-                                  vineta(),
-                                  Container(
-                                    width: 240,
-                                    child: Expanded(
-                                      child: Text(
-                                        "TITULADO, DOBLE ESPECIALIDAD/ DIPLOMA",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 16,
-                                    child: Row(
-                                      children: [
-                                        Radio(
-                                            value: 1,
-                                            groupValue: gender,
-                                            onChanged: (int? value) {
-                                              gender = value!;
-                                              setState(() {});
-                                            }),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    "3",
-                                    style: TextStyle(fontSize: 15),
-                                  )
-                                ],
-                              ),
-                              Divider(
-                                color: Colors.black.withOpacity(0.5),
-                                indent: 15.0,
-                                endIndent: 15.0,
-                              ),
-                              Row(
-                                children: [
-                                  vineta(),
-                                  Container(
-                                    width: 240,
-                                    child: Expanded(
-                                      child: Text(
-                                        "TITULADO, DOBLE ESPECIALIDAD/ DIPLOMA",
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 16,
-                                    child: Row(
-                                      children: [
-                                        Radio(
-                                            value: 1,
-                                            groupValue: gender,
-                                            onChanged: (int? value) {
-                                              gender = value!;
-                                              setState(() {});
-                                            }),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    "2",
-                                    style: TextStyle(fontSize: 15),
-                                  )
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ))
+                            );
+                          }),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }),
           ],
         ));
   }

@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'form_Evaluador.dart';
 
+// ignore: use_key_in_widget_constructors
 class HomeEvaluador extends StatefulWidget {
   @override
   State<HomeEvaluador> createState() => _HomeEvaluadorState();
@@ -15,6 +16,7 @@ class HomeEvaluador extends StatefulWidget {
 
 class _HomeEvaluadorState extends State<HomeEvaluador> {
   EvaluadorModel? EvalModel;
+  // ignore: non_constant_identifier_names
   Widget Jerarquia(String jerarquia) {
     Widget fila;
     switch (jerarquia) {
@@ -23,9 +25,9 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
           // ignore: prefer_const_literals_to_create_immutables
           children: [
             Icon(Icons.star, size: 14, color: Colors.amber[700]),
-            Icon(Icons.star,
+            const Icon(Icons.star,
                 size: 14, color: Color.fromARGB(255, 223, 220, 215)),
-            Icon(Icons.star,
+            const Icon(Icons.star,
                 size: 14, color: Color.fromARGB(255, 223, 220, 215)),
           ],
         );
@@ -44,7 +46,7 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
               size: 14,
               color: Colors.amber[700],
             ),
-            Icon(Icons.star,
+            const Icon(Icons.star,
                 size: 14, color: Color.fromARGB(255, 223, 220, 215)),
           ],
         );
@@ -189,7 +191,7 @@ class _HomeEvaluadorState extends State<HomeEvaluador> {
                                     EvalModel = miEvalModel[index];
                                     showFormEvaluador();
                                   },
-                                  icon: Icon(Icons.edit))),
+                                  icon: const Icon(Icons.edit))),
                         ),
                       );
                     });
