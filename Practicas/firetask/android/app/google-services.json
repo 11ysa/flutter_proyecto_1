@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "218054706656",
+    "project_id": "codigo-task-37361",
+    "storage_bucket": "codigo-task-37361.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218054706656:android:a9f71024e92eeb53335785",
+        "android_client_info": {
+          "package_name": "com.example.firetask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "218054706656-va5hden277govtdlm03cpmi7rvv701bn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATfPKjVoGmCRoWPrStltCL4Jv3HD_ScAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "218054706656-va5hden277govtdlm03cpmi7rvv701bn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
